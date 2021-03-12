@@ -9,6 +9,7 @@ public class Card {
     //information held in the card
     private String name;
     private int rotation;
+    private int rotationRequirement;
     private Texture bearer;
     private int weight;
     private String text;
@@ -64,7 +65,16 @@ public class Card {
     public Card() {
 
     }
-
+    /*
+    Checks if the card has NOT been played within the turn amount given in int rotationRequirement
+     */
+    public boolean isPlayable(){
+        boolean output = false;
+        if (rotation == rotationRequirement) {
+            output = true;
+        }
+        return output;
+    }
 
     //setters and getters
     public int getIndex() {
