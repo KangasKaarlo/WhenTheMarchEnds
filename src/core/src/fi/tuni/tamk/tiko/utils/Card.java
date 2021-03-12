@@ -5,12 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 public class Card {
     //variable to help debugging
     private int index;
-
     //information held in the card
     private String name;
     private int rotation;
     private int rotationRequirement;
-    private Texture bearer;
+    private String bearer;
     private int weight;
     private String text;
     private String requirement;
@@ -29,7 +28,7 @@ public class Card {
     public Card(int index,
             String name,
             int rotation,
-            Texture bearer,
+            String bearer,
             int weight,
             String text,
             String requirement,
@@ -63,7 +62,7 @@ public class Card {
     }
 
     public Card() {
-
+        rotationRequirement = 5;
     }
     /*
     Checks if the card has NOT been played within the turn amount given in int rotationRequirement
@@ -101,11 +100,19 @@ public class Card {
         this.rotation = rotation;
     }
 
-    public Texture getBearer() {
+    public int getRotationRequirement() {
+        return rotationRequirement;
+    }
+
+    public void setRotationRequirement(int rotationRequirement) {
+        this.rotation = rotationRequirement;
+    }
+
+    public String getBearer() {
         return bearer;
     }
 
-    public void setBearer(Texture bearer) {
+    public void setBearer(String bearer) {
         this.bearer = bearer;
     }
 

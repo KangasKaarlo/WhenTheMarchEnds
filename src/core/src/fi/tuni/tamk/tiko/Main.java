@@ -6,14 +6,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import fi.tuni.tamk.tiko.utils.Deck;
+
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	
+	Deck deck;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		deck = new Deck();
+
 	}
 
 	@Override
