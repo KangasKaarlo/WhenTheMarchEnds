@@ -13,7 +13,7 @@ public class CoreGameplayLoop implements Screen {
     SpriteBatch batch;
 
     Deck deck;
-    Card currendCard;
+    Card currentCard;
 
     //Attributes
     int social;
@@ -25,7 +25,7 @@ public class CoreGameplayLoop implements Screen {
         this.host = host;
         batch = host.batch;
         deck = new Deck();
-        currendCard = deck.drawACard();
+        currentCard = deck.drawACard();
 
         //initializing attributes
         social = 50;
