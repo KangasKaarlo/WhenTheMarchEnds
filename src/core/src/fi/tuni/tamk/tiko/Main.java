@@ -9,6 +9,7 @@ import com.badlogic.gdx.Game;
 public class Main extends Game {
 	SpriteBatch batch;
 	OrthographicCamera camera;
+	Texture backgroundImage;
 
 	public SpriteBatch getBatch() {
 		return batch;
@@ -21,6 +22,7 @@ public class Main extends Game {
 		camera.setToOrtho(false, 9,16);
 		img = new Texture("badlogic.jpg");
 		setScreen(new MainMenu(this));
+		backgroundImage = new Texture("room.png");
 	}
 
 	@Override

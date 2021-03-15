@@ -39,12 +39,14 @@ public class CoreGameplayLoop implements Screen {
     Sprite sleepDisplay;
     Sprite hungerDisplay;
     Sprite dutyDisplay;
+    Texture backgroundImage;
 
     public CoreGameplayLoop(Main host) {
         this.host = host;
         batch = host.batch;
         deck = new Deck();
         currentCard = deck.drawACard();
+        backgroundImage = host.backgroundImage;
 
         //Generates the font and sets a camera to use it with
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
@@ -61,7 +63,7 @@ public class CoreGameplayLoop implements Screen {
         visualCard = new Sprite(new Texture("default.png"));
         visualCard.setSize(7,7);
         visualCard.setX(normalCamera.viewportWidth /2 - visualCard.getWidth()/2);
-        visualCard.setY(normalCamera.viewportHeight /2.5f - visualCard.getHeight()/2);
+        visualCard.setY(normalCamera.viewportHeight /2.3f - visualCard.getHeight()/2);
 
         //initializing attributes
         social = 50;
@@ -118,6 +120,9 @@ public class CoreGameplayLoop implements Screen {
         batch.begin();
         batch.setProjectionMatrix(normalCamera.combined);
 
+        //draws the background
+        batch.draw(backgroundImage,0,0, normalCamera.viewportWidth, normalCamera.viewportHeight);
+
         //draws the card
         visualCard.draw(batch);
 
@@ -134,7 +139,7 @@ public class CoreGameplayLoop implements Screen {
         //The drawNewCard function has a error in it that it can draw an empty card
         //I'll hopefully have time to fix it properly, but this works
         try {
-            font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/8, fontCamera.viewportHeight/1.35f, 500, 5, true);
+            font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/8, fontCamera.viewportHeight/1.25f, 500, 5, true);
         } catch (NullPointerException e) {
             currentCard = deck.drawACard();
         }
