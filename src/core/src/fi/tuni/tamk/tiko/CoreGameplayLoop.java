@@ -190,6 +190,7 @@ public class CoreGameplayLoop implements Screen {
         social += currentCard.getNoSocial();
         duty += currentCard.getNoDuty();
         currentCard = deck.drawACard();
+        updateRotations();
     }
     private void cardSwipeRight() {
         sleep += currentCard.getYesSleep();
@@ -197,6 +198,15 @@ public class CoreGameplayLoop implements Screen {
         social += currentCard.getYesSocial();
         duty += currentCard.getYesDuty();
         currentCard = deck.drawACard();
+        updateRotations();
+    }
+    private void updateRotations() {
+        for (int i = 0; i < deck.getDeck().length; i++) {
+            if (deck.getDeck()[i].getRotation() < deck.getDeck()[i].getRotationRequirement()) {
+                deck.getDeck()[i].setRotation(deck.getDeck()[i].getRotation() + 1);
+            }
+        }
+        deck.getDeck()[currentCard.getIndex()].setRotation(0);
     }
 
     public void updateAttributes() {

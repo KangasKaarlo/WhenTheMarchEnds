@@ -56,6 +56,9 @@ public class Deck {
         //returns picked card
         return output;
     }
+    public Card [] getDeck() {
+        return deck;
+    }
     String JsonDeck = "[\n" +
             " {\n" +
             "   \"index\": 0,\n" +
