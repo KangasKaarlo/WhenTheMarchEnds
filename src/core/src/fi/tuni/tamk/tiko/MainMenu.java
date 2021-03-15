@@ -16,28 +16,19 @@ public class MainMenu implements Screen {
     SpriteBatch batch;
     OrthographicCamera camera;
     Texture backgroundImage;
-    float playButtonX;
-    float playButtonY;
-    float playButtonWidth;
-    float playButtonHeight;
+
 
     Main host;
-   // SpriteBatch batch;
-   // OrthographicCamera camera;
 
     public MainMenu(Main host) {
         this.host = host;
         batch = host.batch;
         camera = host.camera;
-        //button = host.button;
-        //buttonTexture = host.buttonTexture;
-        playButtonWidth = host.playButtonWidth;
-        playButtonHeight = host.playButtonHeight;
-        playButton = new Sprite(new Texture("default.png"));
-        playButton.setSize(playButtonWidth, playButtonHeight);
-        playButton.setX(host.playButtonX);
-        playButton.setY(host.playButtonY);
 
+        playButton = new Sprite(new Texture("default.png"));
+        playButton.setSize(6, 2);
+        playButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
+        playButton.setY(8);
 
 
     }
@@ -52,9 +43,8 @@ public class MainMenu implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 0, 3, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        //draws the background
-        playButton.draw(batch);
+
+
         if (Gdx.input.isTouched()){
             int realX = Gdx.input.getX();
             int realY = Gdx.input.getY();
@@ -62,13 +52,18 @@ public class MainMenu implements Screen {
             camera.unproject(touchPos);
             System.out.println(touchPos.x);
             System.out.println(touchPos.y);
-            if (touchPos.x > playButton.getX() && touchPos.x > playButton.getX() + playButton.getWidth()
-                    &&  touchPos.y > playButton.getY() && touchPos.y > playButton.getY() + playButton.getHeight()) {
+            if (touchPos.x > playButton.getX() && touchPos.x < playButton.getX() + playButton.getWidth()
+                    &&  touchPos.y > playButton.getY() && touchPos.y < playButton.getY() + playButton.getHeight()) {
 
-                          host.setScreen(new CoreGameplayLoop(host));
+                host.setScreen(new CoreGameplayLoop(host));
 
             }
         }
+
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        playButton.draw(batch);
+
         batch.end();
     }
 

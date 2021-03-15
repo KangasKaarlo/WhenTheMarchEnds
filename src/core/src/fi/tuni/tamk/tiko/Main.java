@@ -12,7 +12,6 @@ import java.awt.Rectangle;
 public class Main extends Game {
 
 	Sprite playButton;
-	Texture playButtonTexture;
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	Texture backgroundImage;
@@ -26,12 +25,8 @@ public class Main extends Game {
 	Texture img;
 	@Override
 	public void create () {
-		playButtonX = 250;
-		playButtonY = 600-playButtonHeight;
-		playButtonWidth = 200;
-		playButtonHeight = 100;
 
-		playButtonTexture = new Texture("default.png");
+
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 9,16);
