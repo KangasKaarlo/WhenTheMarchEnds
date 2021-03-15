@@ -29,7 +29,7 @@ public class MainMenu implements Screen {
         playButton.setSize(6, 2);
         playButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
         playButton.setY(8);
-
+        backgroundImage = new Texture("room.png");
 
     }
 
@@ -62,6 +62,7 @@ public class MainMenu implements Screen {
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
+        batch.draw(backgroundImage,0,0, camera.viewportWidth, camera.viewportHeight);
         playButton.draw(batch);
 
         batch.end();

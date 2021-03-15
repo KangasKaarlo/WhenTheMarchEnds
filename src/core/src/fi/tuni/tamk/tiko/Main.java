@@ -11,17 +11,10 @@ import java.awt.Rectangle;
 
 public class Main extends Game {
 
-	Sprite playButton;
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	Texture backgroundImage;
-	float playButtonX;
-	float playButtonY;
-	float playButtonWidth;
-	float playButtonHeight;
-	public SpriteBatch getBatch() {
-		return batch;
-	}
+
 	Texture img;
 	@Override
 	public void create () {
