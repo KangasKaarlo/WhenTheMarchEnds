@@ -12,12 +12,10 @@ import fi.tuni.tamk.tiko.utils.Deck;
 public class Main extends Game {
 	SpriteBatch batch;
 	Texture img;
-	Deck deck;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		deck = new Deck();
 		setScreen(new MainMenu(this));
 	}
 

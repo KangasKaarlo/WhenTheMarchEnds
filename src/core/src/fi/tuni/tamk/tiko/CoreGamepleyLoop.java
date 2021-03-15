@@ -5,11 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class CoreGamePlayLoop implements Screen {
-    MyGdxGame host;
+public class CoreGamepleyLoop implements Screen {
+    Main host;
     SpriteBatch batch;
 
-    public CoreGamePlayLoop(MyGdxGame host) {
+    public CoreGamepleyLoop(Main host) {
         this.host = host;
         batch = host.batch;
     }

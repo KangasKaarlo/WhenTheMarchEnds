@@ -7,10 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MainMenu implements Screen {
 
-    MyGdxGame host;
+    Main host;
     SpriteBatch batch;
 
-    public MainMenu(MyGdxGame host) {
+    public MainMenu(Main host) {
         this.host = host;
         batch = host.batch;
     }
@@ -27,7 +27,7 @@ public class MainMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         if (Gdx.input.isTouched()){
-            host.setScreen(new CoreGamePlayLoop(host));
+            host.setScreen(new CoreGamepleyLoop(host));
         }
         batch.end();
     }
