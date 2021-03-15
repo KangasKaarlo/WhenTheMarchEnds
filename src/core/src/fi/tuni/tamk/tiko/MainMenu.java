@@ -13,6 +13,7 @@ public class MainMenu implements Screen {
     public MainMenu(Main host) {
         this.host = host;
         batch = host.batch;
+
     }
 
 

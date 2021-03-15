@@ -46,7 +46,7 @@ public class CoreGameplayLoop implements Screen {
         deck = new Deck();
         currentCard = deck.drawACard();
 
-
+        //Generates the font and sets a camera to use it with
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 30;
@@ -56,8 +56,7 @@ public class CoreGameplayLoop implements Screen {
         fontCamera = new OrthographicCamera();
         fontCamera.setToOrtho(false, 675,1200);
 
-        normalCamera = new OrthographicCamera();
-        normalCamera.setToOrtho(false, 9,16);
+        normalCamera = host.camera;
 
         visualCard = new Sprite(new Texture("default.png"));
         visualCard.setSize(7,7);
@@ -85,6 +84,8 @@ public class CoreGameplayLoop implements Screen {
         hungerDisplay.setY(14);
         dutyDisplay.setX(7);
         dutyDisplay.setY(14);
+
+        //this detects if the screen is swiped
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
 
             @Override
@@ -116,8 +117,11 @@ public class CoreGameplayLoop implements Screen {
 
         batch.begin();
         batch.setProjectionMatrix(normalCamera.combined);
+
+        //draws the card
         visualCard.draw(batch);
 
+        //draws the attribute displays
         sleepDisplay.draw(batch);
         dutyDisplay.draw(batch);
         hungerDisplay.draw(batch);
@@ -126,7 +130,6 @@ public class CoreGameplayLoop implements Screen {
 
         //only font renders after this line
         batch.setProjectionMatrix(fontCamera.combined);
-
 
         //The drawNewCard function has a error in it that it can draw an empty card
         //I'll hopefully have time to fix it properly, but this works
@@ -138,7 +141,10 @@ public class CoreGameplayLoop implements Screen {
 
         batch.end();
     }
-
+    /**
+     * Checks if any of the attributes has dropped under 0
+     *     or gone over 100
+     */
     private void checkForDeath() {
         if (sleep <= 0 || sleep >=100 ||
                 hunger <= 0 || hunger >=100 ||
