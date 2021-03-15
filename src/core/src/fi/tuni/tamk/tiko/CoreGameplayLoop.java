@@ -5,13 +5,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import fi.tuni.tamk.tiko.utils.Card;
 import fi.tuni.tamk.tiko.utils.Deck;
 
 public class CoreGameplayLoop implements Screen {
     Main host;
     SpriteBatch batch;
 
-    Deck deck = new Deck();
+    Deck deck;
+    Card currendCard;
 
     //Attributes
     int social;
@@ -22,6 +24,8 @@ public class CoreGameplayLoop implements Screen {
     public CoreGameplayLoop(Main host) {
         this.host = host;
         batch = host.batch;
+        deck = new Deck();
+        currendCard = deck.drawACard();
 
         //initializing attributes
         social = 50;
