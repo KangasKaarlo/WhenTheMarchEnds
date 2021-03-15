@@ -3,17 +3,19 @@ package fi.tuni.tamk.tiko;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MainMenu implements Screen {
 
     Main host;
     SpriteBatch batch;
+    OrthographicCamera camera;
 
     public MainMenu(Main host) {
         this.host = host;
         batch = host.batch;
-
+        camera = host.camera;
     }
 
 
