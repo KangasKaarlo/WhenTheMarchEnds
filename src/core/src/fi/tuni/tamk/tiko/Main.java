@@ -17,7 +17,6 @@ public class Main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		deck = new Deck();
-
 	}
 
 	@Override

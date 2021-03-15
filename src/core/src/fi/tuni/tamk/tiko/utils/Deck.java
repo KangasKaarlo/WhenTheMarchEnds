@@ -6,8 +6,7 @@ public class Deck {
     Card [] deck;
     Gson gson = new Gson();
     public Deck(){
-        Card [] tmp = gson.fromJson(JsonDeck, Card [].class);
-        deck = tmp;
+        deck = gson.fromJson(JsonDeck, Card [].class);
     }
     public Card drawACard() {
         Card output = new Card();
@@ -38,6 +37,8 @@ public class Deck {
             }
             playableCards = tmp;
         }
+        // Randomly picks one of the four cards.
+        // Cards with bigger weight have a bigger change to be picked
         int totalWeightInTheBag = 0;
         for (int i = 0; i < 4; i++) {
             totalWeightInTheBag += fourSelectedCards[i].getWeight();
@@ -52,6 +53,7 @@ public class Deck {
                 previousWeightsCombined += fourSelectedCards[i].getWeight();
             }
         }
+        //returns picked card
         return output;
     }
     String JsonDeck = "[\n" +
