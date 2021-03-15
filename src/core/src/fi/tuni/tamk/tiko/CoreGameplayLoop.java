@@ -3,6 +3,8 @@ package fi.tuni.tamk.tiko;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fi.tuni.tamk.tiko.utils.Card;
@@ -11,6 +13,7 @@ import fi.tuni.tamk.tiko.utils.Deck;
 public class CoreGameplayLoop implements Screen {
     Main host;
     SpriteBatch batch;
+    Sprite visualCard;
 
     Deck deck;
     Card currentCard;
@@ -26,7 +29,7 @@ public class CoreGameplayLoop implements Screen {
         batch = host.batch;
         deck = new Deck();
         currentCard = deck.drawACard();
-
+        visualCard = new Sprite();
         //initializing attributes
         social = 50;
         sleep = 50;
