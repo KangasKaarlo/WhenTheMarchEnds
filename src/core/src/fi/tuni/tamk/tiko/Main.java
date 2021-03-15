@@ -7,6 +7,7 @@ import com.badlogic.gdx.Game;
 
 public class Main extends Game {
 	SpriteBatch batch;
+
 	public SpriteBatch getBatch() {
 		return batch;
 	}
