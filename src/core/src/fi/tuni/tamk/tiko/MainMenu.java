@@ -27,7 +27,7 @@ public class MainMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         if (Gdx.input.isTouched()){
-            host.setScreen(new CoreGamepleyLoop(host));
+            host.setScreen(new CoreGameplayLoop(host));
         }
         batch.end();
     }
