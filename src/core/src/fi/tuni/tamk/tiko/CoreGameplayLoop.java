@@ -49,7 +49,7 @@ public class CoreGameplayLoop implements Screen {
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 25;
+        parameter.size = 30;
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 3;
         font = generator.generateFont(parameter);
@@ -60,9 +60,9 @@ public class CoreGameplayLoop implements Screen {
         normalCamera.setToOrtho(false, 9,16);
 
         visualCard = new Sprite(new Texture("default.png"));
-        visualCard.setSize(5,7);
+        visualCard.setSize(7,7);
         visualCard.setX(normalCamera.viewportWidth /2 - visualCard.getWidth()/2);
-        visualCard.setY(normalCamera.viewportHeight /2 - visualCard.getHeight()/2);
+        visualCard.setY(normalCamera.viewportHeight /2.5f - visualCard.getHeight()/2);
 
         //initializing attributes
         social = 50;
@@ -126,15 +126,24 @@ public class CoreGameplayLoop implements Screen {
 
         //only font renders after this line
         batch.setProjectionMatrix(fontCamera.combined);
-        font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/2 - 100, fontCamera.viewportHeight/2);
+
+
+        //The drawNewCard function has a error in it that it can draw an empty card
+        //I'll hopefully have time to fix it properly, but this works
+        try {
+            font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/8, fontCamera.viewportHeight/1.35f, 500, 5, true);
+        } catch (NullPointerException e) {
+            currentCard = deck.drawACard();
+        }
+
         batch.end();
     }
 
     private void checkForDeath() {
-        if (sleep < 0 || sleep >100 ||
-                hunger < 0 || hunger >100 ||
-                duty < 0 || duty >100 ||
-                social < 0 || social >100) {
+        if (sleep <= 0 || sleep >=100 ||
+                hunger <= 0 || hunger >=100 ||
+                duty <= 0 || duty >=100 ||
+                social <= 0 || social >=100) {
             host.setScreen(new MainMenu(host));
         }
     }
@@ -181,13 +190,13 @@ public class CoreGameplayLoop implements Screen {
 
     public void updateAttributes() {
 
-        socialDisplay.setSize(displayWidth , displayHeight * social / 10);
+        socialDisplay.setSize(displayWidth , displayHeight * (social / 10));
 
-        sleepDisplay.setSize(displayWidth , displayHeight * sleep / 10);
+        sleepDisplay.setSize(displayWidth , displayHeight * (sleep / 10));
 
-        hungerDisplay.setSize(displayWidth , displayHeight * hunger / 10);
+        hungerDisplay.setSize(displayWidth , displayHeight * (hunger / 10));
 
-        dutyDisplay.setSize(displayWidth , displayHeight * duty / 10);
+        dutyDisplay.setSize(displayWidth , displayHeight * (duty / 10));
 
     }
 }

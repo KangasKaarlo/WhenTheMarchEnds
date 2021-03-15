@@ -63,7 +63,7 @@ public class Deck {
             "   \"rotation\": 5,\n" +
             "   \"bearer\": \"bed.png\",\n" +
             "   \"weight\": 8,\n" +
-            "   \"text\": \"You've woken up,but would love to sleep just a little longer. Snooze?\",\n" +
+            "   \"text\": \"You've woken up ,but would love to sleep just a little longer. Snooze?\",\n" +
             "   \"requirement\": \"\",\n" +
             "   \"yesSocial\": 0,\n" +
             "   \"yesSleep\": 20,\n" +
