@@ -74,15 +74,12 @@ public class SettingsMenu implements Screen {
                     && touchPos.y > returnButton.getY() && touchPos.y < returnButton.getY() + returnButton.getHeight()) {
 
                 host.setScreen(new MainMenu(host));
-
-
             }
-
-
-
         }
+
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
+
         batch.draw(backgroundImage,0,0, camera.viewportWidth, camera.viewportHeight);
         sfxButton.draw(batch);
         musicButton.draw(batch);
