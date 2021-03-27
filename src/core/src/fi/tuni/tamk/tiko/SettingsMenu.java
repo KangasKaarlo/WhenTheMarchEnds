@@ -58,8 +58,6 @@ public class SettingsMenu implements Screen {
             int realY = Gdx.input.getY();
             Vector3 touchPos = new Vector3(realX, realY, 0);
             camera.unproject(touchPos);
-            System.out.println(touchPos.x);
-            System.out.println(touchPos.y);
 
             if (touchPos.x > sfxButton.getX() && touchPos.x < sfxButton.getX() + sfxButton.getWidth()
                     && touchPos.y > sfxButton.getY() && touchPos.y < sfxButton.getY() + sfxButton.getHeight()) {
