@@ -94,6 +94,8 @@ public class CoreGameplayLoop implements Screen {
 
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
+                //the game thinks that the players finger leaving after pressing start game is a swipe
+                //this fixes that
                 if (falseSwipeCaught) {
                     if (velocityX >0) {
                         cardSwipeLeft();
