@@ -23,8 +23,6 @@ public class SettingsMenu implements Screen {
     public SettingsMenu(Main host) {
 
         this.host = host;
-        sfx =host.sfx;
-        music = host.music;
         batch = host.batch;
         camera = host.camera;
         sfxButton = new Sprite(new Texture("default.png"));
@@ -65,12 +63,12 @@ public class SettingsMenu implements Screen {
 
             if (touchPos.x > sfxButton.getX() && touchPos.x < sfxButton.getX() + sfxButton.getWidth()
                     && touchPos.y > sfxButton.getY() && touchPos.y < sfxButton.getY() + sfxButton.getHeight()) {
-                        sfx = false;
+                        host.sfx = false;
 
             }
             if (touchPos.x > musicButton.getX() && touchPos.x < musicButton.getX() + musicButton.getWidth()
                     && touchPos.y > musicButton.getY() && touchPos.y < musicButton.getY() + musicButton.getHeight()) {
-                        music = false;
+                        host.music = false;
 
             }
 
