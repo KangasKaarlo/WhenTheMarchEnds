@@ -13,6 +13,10 @@ import java.awt.Rectangle;
 
 public class MainMenu implements Screen {
     Sprite playButton;
+    Sprite settingsButton;
+    Sprite quitButton;
+    Boolean sfx;
+    Boolean music;
     SpriteBatch batch;
     OrthographicCamera camera;
     Texture backgroundImage;
@@ -24,11 +28,23 @@ public class MainMenu implements Screen {
         this.host = host;
         batch = host.batch;
         camera = host.camera;
-
+        sfx = true;
+        music = true;
         playButton = new Sprite(new Texture("default.png"));
         playButton.setSize(6, 2);
         playButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
         playButton.setY(8);
+
+       settingsButton = new Sprite(new Texture("default.png"));
+        settingsButton.setSize(6, 2);
+        settingsButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
+        settingsButton.setY(5);
+
+        quitButton = new Sprite(new Texture("default.png"));
+        quitButton.setSize(6, 2);
+        quitButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
+        quitButton.setY(2);
+
         backgroundImage = new Texture("room.png");
 
     }
@@ -58,13 +74,32 @@ public class MainMenu implements Screen {
                 host.setScreen(new CoreGameplayLoop(host));
 
             }
+            if (touchPos.x > settingsButton.getX() && touchPos.x < settingsButton.getX() + settingsButton.getWidth()
+                    &&  touchPos.y > settingsButton.getY() && touchPos.y < settingsButton.getY() + settingsButton.getHeight()) {
+
+                host.setScreen(new SettingsMenu(host));
+
+            }
+
+            if (touchPos.x > quitButton.getX() && touchPos.x < quitButton.getX() + quitButton.getWidth()
+                    &&  touchPos.y > quitButton.getY() && touchPos.y < quitButton.getY() + quitButton.getHeight()) {
+
+                host.setScreen(new CoreGameplayLoop(host));
+                //Quit button need to quit the game
+
+            }
+
+
+
+
         }
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         batch.draw(backgroundImage,0,0, camera.viewportWidth, camera.viewportHeight);
         playButton.draw(batch);
-
+        settingsButton.draw(batch);
+        quitButton.draw(batch);
         batch.end();
     }
 

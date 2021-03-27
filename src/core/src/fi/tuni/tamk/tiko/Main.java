@@ -10,7 +10,8 @@ import com.badlogic.gdx.Game;
 import java.awt.Rectangle;
 
 public class Main extends Game {
-
+    Boolean sfx;
+    Boolean music;
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	Texture backgroundImage;
