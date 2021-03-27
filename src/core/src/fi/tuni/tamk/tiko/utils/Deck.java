@@ -8,6 +8,9 @@ public class Deck {
     public Deck(){
         deck = gson.fromJson(JsonDeck, Card [].class);
     }
+
+
+
     public Card drawACard() {
         Card output = new Card();
         //finds all cards that can be played

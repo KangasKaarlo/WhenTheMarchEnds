@@ -41,6 +41,8 @@ public class CoreGameplayLoop implements Screen {
     Sprite dutyDisplay;
     Texture backgroundImage;
 
+    boolean falseSwipeCaught = false;
+
     public CoreGameplayLoop(Main host) {
         this.host = host;
         batch = host.batch;
@@ -92,11 +94,17 @@ public class CoreGameplayLoop implements Screen {
 
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
-                if (velocityX >0) {
-                    cardSwipeLeft();
-                }else if (velocityX < 0) {
-                    cardSwipeRight();
+                if (falseSwipeCaught) {
+                    if (velocityX >0) {
+                        cardSwipeLeft();
+                    }else if (velocityX < 0) {
+                        cardSwipeRight();
+                    }
                 }
+                else {
+                    falseSwipeCaught = true;
+                }
+
                 return super.fling(velocityX, velocityY, button);
             }
         }));
