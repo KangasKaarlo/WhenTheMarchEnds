@@ -40,6 +40,10 @@ public class CoreGameplayLoop implements Screen {
     Sprite sleepDisplay;
     Sprite hungerDisplay;
     Sprite dutyDisplay;
+    Texture socialTexture;
+    Texture sleepTexture;
+    Texture hungerTexture;
+    Texture dutyTexture;
     Texture backgroundImage;
     int cardSpeed;
     Boolean cardHasBeenSwipedFully;
@@ -86,7 +90,6 @@ public class CoreGameplayLoop implements Screen {
         hungerDisplay = new Sprite(new Texture("default.png"));
         dutyDisplay = new Sprite(new Texture("default.png"));
 
-        //cursed code refactor if you have time
         socialDisplay.setX(1);
         socialDisplay.setY(14);
         sleepDisplay.setX(3);
@@ -96,6 +99,11 @@ public class CoreGameplayLoop implements Screen {
         dutyDisplay.setX(7);
         dutyDisplay.setY(14);
 
+
+        socialTexture = new Texture("wme_icon_social.png");
+        sleepTexture = new Texture("wme_icon_sleep.png");
+        hungerTexture = new Texture("wme_icon_food.png");
+        dutyTexture = new Texture("wme_icon_duty.png");
         //this detects if the screen is swiped
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
 
@@ -158,6 +166,14 @@ public class CoreGameplayLoop implements Screen {
         hungerDisplay.draw(batch);
         socialDisplay.draw(batch);
 
+        batch.draw(sleepTexture, sleepDisplay.getX(), sleepDisplay.getY(),
+                1, 1);
+        batch.draw(hungerTexture, hungerDisplay.getX(), hungerDisplay.getY(),
+                1, 1);
+        batch.draw(dutyTexture, dutyDisplay.getX(), dutyDisplay.getY(),
+                1, 1);
+        batch.draw(socialTexture, socialDisplay.getX(), socialDisplay.getY(),
+                1, 1);
         batch.draw(new Texture("wme_statbar_gold.png"), 0, 0, 9, 1.5f);
 
         //only font renders after this line
@@ -209,6 +225,7 @@ public class CoreGameplayLoop implements Screen {
     @Override
     public void dispose() {
         font.dispose();
+
     }
 
     private void cardSwipeLeft() {
