@@ -136,6 +136,7 @@ public class CoreGameplayLoop implements Screen {
         visualCard.draw(batch);
 
         //draws the attribute displays
+        batch.draw(new Texture("wme_statbar_ver-02.png"), 0, normalCamera.viewportHeight-3, 9, 3);
         sleepDisplay.draw(batch);
         dutyDisplay.draw(batch);
         hungerDisplay.draw(batch);
