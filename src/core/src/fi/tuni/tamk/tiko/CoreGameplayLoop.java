@@ -21,6 +21,7 @@ public class CoreGameplayLoop implements Screen {
     BitmapFont font;
 
     Sprite visualCard;
+    Sprite cardForAnimation;
     Deck deck;
     Card currentCard;
 
@@ -40,6 +41,8 @@ public class CoreGameplayLoop implements Screen {
     Sprite hungerDisplay;
     Sprite dutyDisplay;
     Texture backgroundImage;
+    int cardSpeed;
+    Boolean cardHasBeenSwipedFully;
 
     boolean falseSwipeCaught = false;
 
@@ -48,12 +51,13 @@ public class CoreGameplayLoop implements Screen {
         batch = host.batch;
         deck = new Deck();
         currentCard = deck.drawACard();
-        backgroundImage = host.backgroundImage;
+        backgroundImage = new Texture("purple.png");
+        cardHasBeenSwipedFully = true;
 
         //Generates the font and sets a camera to use it with
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 30;
+        parameter.size = 40;
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 3;
         font = generator.generateFont(parameter);
@@ -62,10 +66,13 @@ public class CoreGameplayLoop implements Screen {
 
         normalCamera = host.camera;
 
-        visualCard = new Sprite(new Texture("default.png"));
+        visualCard = new Sprite(new Texture("cardtest.png"));
         visualCard.setSize(7,7);
         visualCard.setX(normalCamera.viewportWidth /2 - visualCard.getWidth()/2);
         visualCard.setY(normalCamera.viewportHeight /2.3f - visualCard.getHeight()/2);
+
+        cardForAnimation = new Sprite(visualCard);
+        cardForAnimation.setX(-cardForAnimation.getWidth());
 
         //initializing attributes
         social = 50;
@@ -96,7 +103,7 @@ public class CoreGameplayLoop implements Screen {
             public boolean fling(float velocityX, float velocityY, int button) {
                 //the game thinks that the players finger leaving after pressing start game is a swipe
                 //this fixes that
-                if (falseSwipeCaught) {
+                if (falseSwipeCaught && cardHasBeenSwipedFully) {
                     if (velocityX <0) {
                         cardSwipeLeft();
                     }else if (velocityX > 0) {
@@ -125,6 +132,14 @@ public class CoreGameplayLoop implements Screen {
 
         updateAttributes();
         checkForDeath();
+        cardForAnimation.setX(cardForAnimation.getX() + cardSpeed * Gdx.graphics.getDeltaTime());
+        if (cardForAnimation.getX() <= 0 - cardForAnimation.getWidth()
+                || cardForAnimation.getX() >= normalCamera.viewportWidth) {
+            cardSpeed = 0;
+            cardHasBeenSwipedFully = true;
+        } else {
+            cardHasBeenSwipedFully = false;
+        }
 
         batch.begin();
         batch.setProjectionMatrix(normalCamera.combined);
@@ -134,14 +149,16 @@ public class CoreGameplayLoop implements Screen {
 
         //draws the card
         visualCard.draw(batch);
+        cardForAnimation.draw(batch);
 
         //draws the attribute displays
-        batch.draw(new Texture("wme_statbar_ver-02.png"), 0, normalCamera.viewportHeight-3, 9, 3);
+        batch.draw(new Texture("wme_statbar_gold.png"), 0, normalCamera.viewportHeight-3, 9, 3);
         sleepDisplay.draw(batch);
         dutyDisplay.draw(batch);
         hungerDisplay.draw(batch);
         socialDisplay.draw(batch);
 
+        batch.draw(new Texture("wme_statbar_gold.png"), 0, 0, 9, 1.5f);
 
         //only font renders after this line
         batch.setProjectionMatrix(fontCamera.combined);
@@ -200,6 +217,8 @@ public class CoreGameplayLoop implements Screen {
         social += currentCard.getNoSocial();
         duty += currentCard.getNoDuty();
         currentCard = deck.drawACard();
+        cardForAnimation.setX(visualCard.getX());
+        cardSpeed = -20;
         updateRotations();
     }
     private void cardSwipeRight() {
@@ -208,8 +227,11 @@ public class CoreGameplayLoop implements Screen {
         social += currentCard.getYesSocial();
         duty += currentCard.getYesDuty();
         currentCard = deck.drawACard();
+        cardForAnimation.setX(visualCard.getX());
+        cardSpeed = 20;
         updateRotations();
     }
+
     private void updateRotations() {
         for (int i = 0; i < deck.getDeck().length; i++) {
             if (deck.getDeck()[i].getRotation() < deck.getDeck()[i].getRotationRequirement()) {
