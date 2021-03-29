@@ -30,12 +30,12 @@ public class MainMenu implements Screen {
         camera = host.camera;
         sfx = true;
         music = true;
-        playButton = new Sprite(new Texture("default.png"));
+        playButton = new Sprite(new Texture("wme_button-start.png"));
         playButton.setSize(6, 2);
         playButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
         playButton.setY(8);
 
-       settingsButton = new Sprite(new Texture("default.png"));
+       settingsButton = new Sprite(new Texture("wme_button-settings.png"));
         settingsButton.setSize(6, 2);
         settingsButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
         settingsButton.setY(5);
