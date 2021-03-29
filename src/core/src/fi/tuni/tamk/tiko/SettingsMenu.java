@@ -18,7 +18,7 @@ public class SettingsMenu implements Screen {
     Main host;
     SpriteBatch batch;
     Texture backgroundImage;
-    public SettingsMenu(Main host) {
+    public SettingsMenu(final Main host) {
 
         this.host = host;
         batch = host.batch;
@@ -44,7 +44,7 @@ public class SettingsMenu implements Screen {
             public boolean tap(float X, float Y, int count, int button) {
                 //the game thinks that the players finger leaving after pressing start game is a swipe
                 //this fixes that
-            if (Gdx.input.isTouched()) {
+
                 float realX = X;
                 float realY = Y;
                 Vector3 touchPos = new Vector3(realX, realY, 0);
@@ -66,8 +66,6 @@ public class SettingsMenu implements Screen {
 
                     host.setScreen(new MainMenu(host));
                 }
-            }
-
                 return super.tap(X, Y,1, button);
             }
         }));
