@@ -97,16 +97,15 @@ public class CoreGameplayLoop implements Screen {
                 //the game thinks that the players finger leaving after pressing start game is a swipe
                 //this fixes that
                 if (falseSwipeCaught) {
-                    if (velocityX >0) {
+                    if (velocityX <0) {
                         cardSwipeLeft();
-                    }else if (velocityX < 0) {
+                    }else if (velocityX > 0) {
                         cardSwipeRight();
                     }
                 }
                 else {
                     falseSwipeCaught = true;
                 }
-
                 return super.fling(velocityX, velocityY, button);
             }
         }));
