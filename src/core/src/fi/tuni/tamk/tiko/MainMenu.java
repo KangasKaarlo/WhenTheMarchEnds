@@ -2,6 +2,7 @@ package fi.tuni.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,12 +16,10 @@ public class MainMenu implements Screen {
     Sprite playButton;
     Sprite settingsButton;
     Sprite quitButton;
-    Boolean sfx;
-    Boolean music;
     SpriteBatch batch;
     OrthographicCamera camera;
     Texture backgroundImage;
-
+    Music music;
 
     Main host;
 
@@ -28,8 +27,7 @@ public class MainMenu implements Screen {
         this.host = host;
         batch = host.batch;
         camera = host.camera;
-        sfx = true;
-        music = true;
+
         playButton = new Sprite(new Texture("wme_button-start.png"));
         playButton.setSize(6, 2);
         playButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
@@ -47,6 +45,9 @@ public class MainMenu implements Screen {
 
         backgroundImage = new Texture("room.png");
 
+        music = host.music;
+        music.setLooping(true);
+        music.play();
     }
 
 

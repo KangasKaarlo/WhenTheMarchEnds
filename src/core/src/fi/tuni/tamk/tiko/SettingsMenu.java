@@ -41,23 +41,30 @@ public class SettingsMenu implements Screen {
         backgroundImage = new Texture("room.png");
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
         @Override
-            public boolean tap(float X, float Y, int count, int button) {
+            public boolean tap(float x, float y, int count, int button) {
                 //the game thinks that the players finger leaving after pressing start game is a swipe
                 //this fixes that
 
-                float realX = X;
-                float realY = Y;
-                Vector3 touchPos = new Vector3(realX, realY, 0);
+                Vector3 touchPos = new Vector3(x, y, 0);
                 camera.unproject(touchPos);
 
                 if (touchPos.x > sfxButton.getX() && touchPos.x < sfxButton.getX() + sfxButton.getWidth()
                         && touchPos.y > sfxButton.getY() && touchPos.y < sfxButton.getY() + sfxButton.getHeight()) {
-                    host.sfx = false;
-
+                    if (host.sfxOn) {
+                        host.sfxOn = false;
+                    } else {
+                        host.sfxOn = true;
+                    }
+                    host.toggleMusicAndSFX();
                 }
                 if (touchPos.x > musicButton.getX() && touchPos.x < musicButton.getX() + musicButton.getWidth()
                         && touchPos.y > musicButton.getY() && touchPos.y < musicButton.getY() + musicButton.getHeight()) {
-                    host.music = false;
+                    if (host.musicOn) {
+                        host.musicOn = false;
+                    } else {
+                        host.musicOn = true;
+                    }
+                    host.toggleMusicAndSFX();
 
                 }
 
@@ -66,7 +73,7 @@ public class SettingsMenu implements Screen {
 
                     host.setScreen(new MainMenu(host));
                 }
-                return super.tap(X, Y,1, button);
+                return super.tap(x, y,1, button);
             }
         }));
     }
