@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.input.GestureDetector;
 
 public class SettingsMenu implements Screen {
     Sprite sfxButton;
@@ -16,10 +17,7 @@ public class SettingsMenu implements Screen {
     OrthographicCamera camera;
     Main host;
     SpriteBatch batch;
-    Boolean sfx;
-    Boolean music;
     Texture backgroundImage;
-
     public SettingsMenu(Main host) {
 
         this.host = host;
@@ -41,7 +39,40 @@ public class SettingsMenu implements Screen {
         returnButton.setY(2);
 
         backgroundImage = new Texture("room.png");
+        Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
+        @Override
+            public boolean tap(float X, float Y, int count, int button) {
+                //the game thinks that the players finger leaving after pressing start game is a swipe
+                //this fixes that
+            if (Gdx.input.isTouched()) {
+                float realX = X;
+                float realY = Y;
+                Vector3 touchPos = new Vector3(realX, realY, 0);
+                camera.unproject(touchPos);
+
+                if (touchPos.x > sfxButton.getX() && touchPos.x < sfxButton.getX() + sfxButton.getWidth()
+                        && touchPos.y > sfxButton.getY() && touchPos.y < sfxButton.getY() + sfxButton.getHeight()) {
+                    host.sfx = false;
+
+                }
+                if (touchPos.x > musicButton.getX() && touchPos.x < musicButton.getX() + musicButton.getWidth()
+                        && touchPos.y > musicButton.getY() && touchPos.y < musicButton.getY() + musicButton.getHeight()) {
+                    host.music = false;
+
+                }
+
+                if (touchPos.x > returnButton.getX() && touchPos.x < returnButton.getX() + returnButton.getWidth()
+                        && touchPos.y > returnButton.getY() && touchPos.y < returnButton.getY() + returnButton.getHeight()) {
+
+                    host.setScreen(new MainMenu(host));
+                }
+            }
+
+                return super.tap(X, Y,1, button);
+            }
+        }));
     }
+
 
     @Override
     public void show() {
@@ -53,7 +84,9 @@ public class SettingsMenu implements Screen {
         Gdx.gl.glClearColor(0.3f, 0.5f, 0.67f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (Gdx.input.isTouched()) {
+
+
+        /*if (Gdx.input.isTouched()) {
             int realX = Gdx.input.getX();
             int realY = Gdx.input.getY();
             Vector3 touchPos = new Vector3(realX, realY, 0);
@@ -75,7 +108,7 @@ public class SettingsMenu implements Screen {
 
                 host.setScreen(new MainMenu(host));
             }
-        }
+        }*/
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);

@@ -66,8 +66,6 @@ public class MainMenu implements Screen {
             int realY = Gdx.input.getY();
             Vector3 touchPos = new Vector3(realX, realY,0);
             camera.unproject(touchPos);
-            System.out.println(touchPos.x);
-            System.out.println(touchPos.y);
             if (touchPos.x > playButton.getX() && touchPos.x < playButton.getX() + playButton.getWidth()
                     &&  touchPos.y > playButton.getY() && touchPos.y < playButton.getY() + playButton.getHeight()) {
 
