@@ -45,6 +45,7 @@ public class CoreGameplayLoop implements Screen {
     Texture hungerTexture;
     Texture dutyTexture;
     Texture backgroundImage;
+    Texture statbarTexture;
     int cardSpeed;
     Boolean cardHasBeenSwipedFully;
 
@@ -104,6 +105,7 @@ public class CoreGameplayLoop implements Screen {
         sleepTexture = new Texture("wme_icon_sleep.png");
         hungerTexture = new Texture("wme_icon_food.png");
         dutyTexture = new Texture("wme_icon_duty.png");
+        statbarTexture = new Texture("wme_statbar_gold.png");
         //this detects if the screen is swiped
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
 
@@ -160,7 +162,7 @@ public class CoreGameplayLoop implements Screen {
         cardForAnimation.draw(batch);
 
         //draws the attribute displays
-        batch.draw(new Texture("wme_statbar_gold.png"), 0, normalCamera.viewportHeight-3, 9, 3);
+        batch.draw(statbarTexture, 0, normalCamera.viewportHeight-3, 9, 3);
         sleepDisplay.draw(batch);
         dutyDisplay.draw(batch);
         hungerDisplay.draw(batch);
@@ -174,7 +176,7 @@ public class CoreGameplayLoop implements Screen {
                 1, 1);
         batch.draw(socialTexture, socialDisplay.getX(), socialDisplay.getY(),
                 1, 1);
-        batch.draw(new Texture("wme_statbar_gold.png"), 0, 0, 9, 1.5f);
+        batch.draw(statbarTexture, 0, 0, 9, 1.5f);
 
         //only font renders after this line
         batch.setProjectionMatrix(fontCamera.combined);
@@ -225,7 +227,11 @@ public class CoreGameplayLoop implements Screen {
     @Override
     public void dispose() {
         font.dispose();
-
+        socialTexture.dispose();
+        sleepTexture.dispose();
+        hungerTexture.dispose();
+        dutyTexture.dispose();
+        backgroundImage.dispose();
     }
 
     private void cardSwipeLeft() {
