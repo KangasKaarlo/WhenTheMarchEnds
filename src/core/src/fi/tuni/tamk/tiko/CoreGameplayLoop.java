@@ -114,6 +114,7 @@ public class CoreGameplayLoop implements Screen {
                 //the game thinks that the players finger leaving after pressing start game is a swipe
                 //this fixes that
                 if (falseSwipeCaught && cardHasBeenSwipedFully) {
+                    deck.getDeck()[currentCard.getIndex()].setRotation(0);
                     if (velocityX <0) {
                         cardSwipeLeft();
                     }else if (velocityX > 0) {
