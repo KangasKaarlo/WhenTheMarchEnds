@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 
 import java.awt.Rectangle;
@@ -23,7 +24,7 @@ public class MainMenu implements Screen {
 
     Main host;
 
-    public MainMenu(Main host) {
+    public MainMenu(final Main host) {
         this.host = host;
         batch = host.batch;
         camera = host.camera;
@@ -33,7 +34,7 @@ public class MainMenu implements Screen {
         playButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
         playButton.setY(8);
 
-       settingsButton = new Sprite(new Texture("wme_button-settings.png"));
+        settingsButton = new Sprite(new Texture("wme_button-settings.png"));
         settingsButton.setSize(6, 2);
         settingsButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
         settingsButton.setY(5);
@@ -44,7 +45,33 @@ public class MainMenu implements Screen {
         quitButton.setY(2);
 
         backgroundImage = new Texture("room.png");
+        Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
+            @Override
+            public boolean tap(float x, float y, int count, int button) {
+                //the game thinks that the players finger leaving after pressing start game is a swipe
+                //this fixes that
 
+                Vector3 touchPos = new Vector3(x, y, 0);
+                camera.unproject(touchPos);
+
+                if (touchPos.x > playButton.getX() && touchPos.x < playButton.getX() + playButton.getWidth()
+                        && touchPos.y > playButton.getY() && touchPos.y < playButton.getY() + playButton.getHeight()) {
+                    host.setScreen(new CoreGameplayLoop(host));
+                }
+                if (touchPos.x > settingsButton.getX() && touchPos.x < settingsButton.getX() + settingsButton.getWidth()
+                        && touchPos.y > settingsButton.getY() && touchPos.y < settingsButton.getY() + settingsButton.getHeight()) {
+                    host.setScreen(new SettingsMenu(host));
+
+                }
+
+                if (touchPos.x > quitButton.getX() && touchPos.x < quitButton.getX() + quitButton.getWidth()
+                        && touchPos.y > quitButton.getY() && touchPos.y < quitButton.getY() + quitButton.getHeight()) {
+                    //Quit button need to quit the game
+
+                }
+                return super.tap(x, y,1, button);
+            }
+        }));
         music = host.music;
         music.setLooping(true);
         music.play();
@@ -62,7 +89,7 @@ public class MainMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-        if (Gdx.input.isTouched()){
+       /* if (Gdx.input.isTouched()){
             int realX = Gdx.input.getX();
             int realY = Gdx.input.getY();
             Vector3 touchPos = new Vector3(realX, realY,0);
@@ -91,7 +118,7 @@ public class MainMenu implements Screen {
 
 
 
-        }
+        }*/
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
