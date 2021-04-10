@@ -89,36 +89,6 @@ public class MainMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-       /* if (Gdx.input.isTouched()){
-            int realX = Gdx.input.getX();
-            int realY = Gdx.input.getY();
-            Vector3 touchPos = new Vector3(realX, realY,0);
-            camera.unproject(touchPos);
-            if (touchPos.x > playButton.getX() && touchPos.x < playButton.getX() + playButton.getWidth()
-                    &&  touchPos.y > playButton.getY() && touchPos.y < playButton.getY() + playButton.getHeight()) {
-
-                host.setScreen(new CoreGameplayLoop(host));
-
-            }
-            if (touchPos.x > settingsButton.getX() && touchPos.x < settingsButton.getX() + settingsButton.getWidth()
-                    &&  touchPos.y > settingsButton.getY() && touchPos.y < settingsButton.getY() + settingsButton.getHeight()) {
-
-                host.setScreen(new SettingsMenu(host));
-
-            }
-
-            if (touchPos.x > quitButton.getX() && touchPos.x < quitButton.getX() + quitButton.getWidth()
-                    &&  touchPos.y > quitButton.getY() && touchPos.y < quitButton.getY() + quitButton.getHeight()) {
-
-                host.setScreen(new CoreGameplayLoop(host));
-                //Quit button need to quit the game
-
-            }
-
-
-
-
-        }*/
 
         batch.begin();
         batch.setProjectionMatrix(camera.combined);

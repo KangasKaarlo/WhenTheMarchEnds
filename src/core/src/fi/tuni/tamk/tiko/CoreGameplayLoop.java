@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector3;
 
 import fi.tuni.tamk.tiko.utils.Card;
 import fi.tuni.tamk.tiko.utils.Deck;
@@ -48,8 +49,6 @@ public class CoreGameplayLoop implements Screen {
     Texture statbarTexture;
     int cardSpeed;
     Boolean cardHasBeenSwipedFully;
-
-    boolean falseSwipeCaught = false;
 
     public CoreGameplayLoop(Main host) {
         this.host = host;
@@ -108,21 +107,32 @@ public class CoreGameplayLoop implements Screen {
         statbarTexture = new Texture("wme_statbar_gold.png");
         //this detects if the screen is swiped
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
+            @Override
+            public boolean tap(float x, float y, int count, int button) {
+                if (cardHasBeenSwipedFully) {
+                    Vector3 touchPos = new Vector3(x, y, 0);
+                    normalCamera.unproject(touchPos);
+                    deck.getDeck()[currentCard.getIndex()].setRotation(0);
+                    if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth()/2
+                            && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getWidth()) {
+                        cardSwipeLeft();
+                    }else if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth()/2 + visualCard.getWidth()
+                            && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
+                        cardSwipeRight();
+                    }
+                }
+                return super.tap(x, y, count, button);
+            }
 
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
-                //the game thinks that the players finger leaving after pressing start game is a swipe
-                //this fixes that
-                if (falseSwipeCaught && cardHasBeenSwipedFully) {
+                if (cardHasBeenSwipedFully) {
                     deck.getDeck()[currentCard.getIndex()].setRotation(0);
                     if (velocityX <0) {
                         cardSwipeLeft();
                     }else if (velocityX > 0) {
                         cardSwipeRight();
                     }
-                }
-                else {
-                    falseSwipeCaught = true;
                 }
                 return super.fling(velocityX, velocityY, button);
             }
