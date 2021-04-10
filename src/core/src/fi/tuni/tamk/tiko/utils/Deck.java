@@ -9,10 +9,9 @@ import com.google.gson.Gson;
 public class Deck {
     Card[] deck;
     Gson gson = new Gson();
-    FileHandle file = Gdx.files.internal("deckJson.txt");
-    String deckJson = file.readString();
 
-    public Deck() {
+    public Deck(FileHandle file) {
+        String deckJson = file.readString();
         deck = gson.fromJson(deckJson, Card[].class);
     }
 

@@ -23,7 +23,8 @@ public class CoreGameplayLoop implements Screen {
 
     Sprite visualCard;
     Sprite cardForAnimation;
-    Deck deck;
+    Deck commonDeck;
+    Deck endConditionDeck;
     Card currentCard;
 
     //one camera for fonts and other for everything else
@@ -45,18 +46,22 @@ public class CoreGameplayLoop implements Screen {
     Texture sleepTexture;
     Texture hungerTexture;
     Texture dutyTexture;
+
     Texture backgroundImage;
     Texture statbarTexture;
     int cardSpeed;
     Boolean cardHasBeenSwipedFully;
+    Boolean gameOver;
 
     public CoreGameplayLoop(Main host) {
         this.host = host;
         batch = host.batch;
-        deck = new Deck();
-        currentCard = deck.drawACard();
+        commonDeck = new Deck(Gdx.files.internal("deckJson.txt"));
+        endConditionDeck = new Deck(Gdx.files.internal("endConditionDeck.txt"));
+        currentCard = commonDeck.drawACard();
         backgroundImage = new Texture("purple.png");
         cardHasBeenSwipedFully = true;
+        gameOver = false;
 
         //Generates the font and sets a camera to use it with
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
@@ -107,12 +112,41 @@ public class CoreGameplayLoop implements Screen {
         statbarTexture = new Texture("wme_statbar_gold.png");
         //this detects if the screen is swiped
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
+
+            //Input for swiping the card
+            @Override
+            public boolean fling(float velocityX, float velocityY, int button) {
+                if (cardHasBeenSwipedFully) {
+                    if (gameOver) {
+                        social = 50;
+                        sleep = 50;
+                        hunger = 50;
+                        duty = 50;
+                        gameOver = false;
+                    }
+                    commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
+                    if (velocityX <0) {
+                        cardSwipeLeft();
+                    }else if (velocityX > 0) {
+                        cardSwipeRight();
+                    }
+                }
+                return super.fling(velocityX, velocityY, button);
+            }
+            //tap control for "swiping the card
             @Override
             public boolean tap(float x, float y, int count, int button) {
                 if (cardHasBeenSwipedFully) {
+                    if (gameOver) {
+                        social = 50;
+                        sleep = 50;
+                        hunger = 50;
+                        duty = 50;
+                        gameOver = false;
+                    }
                     Vector3 touchPos = new Vector3(x, y, 0);
                     normalCamera.unproject(touchPos);
-                    deck.getDeck()[currentCard.getIndex()].setRotation(0);
+                    commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth()/2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getWidth()) {
                         cardSwipeLeft();
@@ -122,19 +156,6 @@ public class CoreGameplayLoop implements Screen {
                     }
                 }
                 return super.tap(x, y, count, button);
-            }
-
-            @Override
-            public boolean fling(float velocityX, float velocityY, int button) {
-                if (cardHasBeenSwipedFully) {
-                    deck.getDeck()[currentCard.getIndex()].setRotation(0);
-                    if (velocityX <0) {
-                        cardSwipeLeft();
-                    }else if (velocityX > 0) {
-                        cardSwipeRight();
-                    }
-                }
-                return super.fling(velocityX, velocityY, button);
             }
         }));
     }
@@ -150,9 +171,12 @@ public class CoreGameplayLoop implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.3f, 0.5f, 0.67f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        //updates the visuals for the attribute meters
         updateAttributes();
+        //checks if the game continues
         checkForDeath();
+
+        //animates the card swipe
         cardForAnimation.setX(cardForAnimation.getX() + cardSpeed * Gdx.graphics.getDeltaTime());
         if (cardForAnimation.getX() <= 0 - cardForAnimation.getWidth()
                 || cardForAnimation.getX() >= normalCamera.viewportWidth) {
@@ -197,7 +221,7 @@ public class CoreGameplayLoop implements Screen {
         try {
             font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/8, fontCamera.viewportHeight/1.25f, 500, 5, true);
         } catch (NullPointerException e) {
-            currentCard = deck.drawACard();
+            currentCard = commonDeck.drawACard();
         }
 
         batch.end();
@@ -207,14 +231,32 @@ public class CoreGameplayLoop implements Screen {
      *     or gone over 100
      */
     private void checkForDeath() {
-        if (sleep <= 0 || sleep >=100 ||
-                hunger <= 0 || hunger >=100 ||
-                duty <= 0 || duty >=100 ||
-                social <= 0 || social >=100) {
-            host.setScreen(new MainMenu(host));
+        if (sleep <= 0) {
+            currentCard = endConditionDeck.getDeck()[0];
+            gameOver = true;
+        } else if (sleep >=100) {
+            currentCard = endConditionDeck.getDeck()[1];
+            gameOver = true;
+        } else if (hunger <= 0) {
+            currentCard = endConditionDeck.getDeck()[2];
+            gameOver = true;
+        } else if (hunger >=100) {
+            currentCard = endConditionDeck.getDeck()[3];
+            gameOver = true;
+        } else if (duty <= 0) {
+            currentCard = endConditionDeck.getDeck()[4];
+            gameOver = true;
+        } else if (duty >=100) {
+            currentCard = endConditionDeck.getDeck()[5];
+            gameOver = true;
+        } else if (social <= 0) {
+            currentCard = endConditionDeck.getDeck()[6];
+            gameOver = true;
+        } else if (social >=100) {
+            currentCard = endConditionDeck.getDeck()[7];
+            gameOver = true;
         }
     }
-
     @Override
     public void resize(int width, int height) {
 
@@ -244,37 +286,44 @@ public class CoreGameplayLoop implements Screen {
         dutyTexture.dispose();
         backgroundImage.dispose();
     }
-
+    /*
+    Adds swipe left effect of the current card to the attribute int's and starts the card swipe animation
+     */
     private void cardSwipeLeft() {
         sleep += currentCard.getNoSleep();
         hunger += currentCard.getNoHunger();
         social += currentCard.getNoSocial();
         duty += currentCard.getNoDuty();
-        currentCard = deck.drawACard();
+        currentCard = commonDeck.drawACard();
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = -20;
         updateRotations();
     }
+    /*
+    Adds swipe right effect of the current card to the attribute int's and starts the card swipe animation
+     */
     private void cardSwipeRight() {
         sleep += currentCard.getYesSleep();
         hunger += currentCard.getYesHunger();
         social += currentCard.getYesSocial();
         duty += currentCard.getYesDuty();
-        currentCard = deck.drawACard();
+        currentCard = commonDeck.drawACard();
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = 20;
         updateRotations();
     }
 
     private void updateRotations() {
-        for (int i = 0; i < deck.getDeck().length; i++) {
-            if (deck.getDeck()[i].getRotation() < deck.getDeck()[i].getRotationRequirement()) {
-                deck.getDeck()[i].setRotation(deck.getDeck()[i].getRotation() + 1);
+        for (int i = 0; i < commonDeck.getDeck().length; i++) {
+            if (commonDeck.getDeck()[i].getRotation() < commonDeck.getDeck()[i].getRotationRequirement()) {
+                commonDeck.getDeck()[i].setRotation(commonDeck.getDeck()[i].getRotation() + 1);
             }
         }
-        deck.getDeck()[currentCard.getIndex()].setRotation(0);
+        commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
     }
-
+    /*
+    Updates the attribute visuals to match the attribute int's
+     */
     public void updateAttributes() {
 
         socialDisplay.setSize(displayWidth , displayHeight * (social / 10));
