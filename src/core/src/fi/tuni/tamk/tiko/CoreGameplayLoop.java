@@ -27,6 +27,8 @@ public class CoreGameplayLoop implements Screen {
     Deck endConditionDeck;
     Card currentCard;
 
+    int howManyCardsPlayed = 0;
+
     //one camera for fonts and other for everything else
     OrthographicCamera fontCamera;
     OrthographicCamera normalCamera;
@@ -53,7 +55,7 @@ public class CoreGameplayLoop implements Screen {
     Boolean cardHasBeenSwipedFully;
     Boolean gameOver;
 
-    public CoreGameplayLoop(Main host) {
+    public CoreGameplayLoop(final Main host) {
         this.host = host;
         batch = host.batch;
         commonDeck = new Deck(Gdx.files.internal("deckJson.txt"));
@@ -118,14 +120,11 @@ public class CoreGameplayLoop implements Screen {
             public boolean fling(float velocityX, float velocityY, int button) {
                 if (cardHasBeenSwipedFully) {
                     if (gameOver) {
-                        social = 50;
-                        sleep = 50;
-                        hunger = 50;
-                        duty = 50;
-                        gameOver = false;
+                        resetAfterDeath();
                     }
                     commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
                     if (velocityX <0) {
+
                         cardSwipeLeft();
                     }else if (velocityX > 0) {
                         cardSwipeRight();
@@ -138,20 +137,22 @@ public class CoreGameplayLoop implements Screen {
             public boolean tap(float x, float y, int count, int button) {
                 if (cardHasBeenSwipedFully) {
                     if (gameOver) {
-                        social = 50;
-                        sleep = 50;
-                        hunger = 50;
-                        duty = 50;
-                        gameOver = false;
+                        resetAfterDeath();
                     }
                     Vector3 touchPos = new Vector3(x, y, 0);
                     normalCamera.unproject(touchPos);
                     commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
-                    if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth()/2
+                    if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getWidth()) {
+                        if (howManyCardsPlayed/3 == 31) {
+                            host.setScreen(new MainMenu(host));
+                        }
                         cardSwipeLeft();
-                    }else if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth()/2 + visualCard.getWidth()
+                    } else if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2 + visualCard.getWidth()
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
+                        if (howManyCardsPlayed/3 == 31) {
+                            host.setScreen(new MainMenu(host));
+                        }
                         cardSwipeRight();
                     }
                 }
@@ -160,6 +161,14 @@ public class CoreGameplayLoop implements Screen {
         }));
     }
 
+    private void resetAfterDeath() {
+            howManyCardsPlayed = 0;
+            social = 50;
+            sleep = 50;
+            hunger = 50;
+            duty = 50;
+            gameOver = false;
+    }
 
 
     @Override
@@ -174,7 +183,7 @@ public class CoreGameplayLoop implements Screen {
         //updates the visuals for the attribute meters
         updateAttributes();
         //checks if the game continues
-        checkForDeath();
+        checkForEndconditions();
 
         //animates the card swipe
         cardForAnimation.setX(cardForAnimation.getX() + cardSpeed * Gdx.graphics.getDeltaTime());
@@ -219,18 +228,22 @@ public class CoreGameplayLoop implements Screen {
         //The drawNewCard function has a error in it that it can draw an empty card
         //I'll hopefully have time to fix it properly, but this works
         try {
-            font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/8, fontCamera.viewportHeight/1.25f, 500, 5, true);
+            font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/8, fontCamera.viewportHeight/1.25f,
+                    500, 5, true);
         } catch (NullPointerException e) {
             currentCard = commonDeck.drawACard();
         }
-
+        font.draw(batch, "Days survived:", fontCamera.viewportWidth/2,
+                fontCamera.viewportHeight/18, 10, 0, false);
+        font.draw(batch, Integer.toString(howManyCardsPlayed/3), fontCamera.viewportWidth/1.75f,
+                fontCamera.viewportHeight/18, 10, 0, false);
         batch.end();
     }
     /**
      * Checks if any of the attributes has dropped under 0
      *     or gone over 100
      */
-    private void checkForDeath() {
+    private void checkForEndconditions() {
         if (sleep <= 0) {
             currentCard = endConditionDeck.getDeck()[0];
             gameOver = true;
@@ -255,6 +268,8 @@ public class CoreGameplayLoop implements Screen {
         } else if (social >=100) {
             currentCard = endConditionDeck.getDeck()[7];
             gameOver = true;
+        } else if (howManyCardsPlayed/3 == 31) {
+            currentCard = endConditionDeck.getDeck()[8];
         }
     }
     @Override
@@ -297,6 +312,7 @@ public class CoreGameplayLoop implements Screen {
         currentCard = commonDeck.drawACard();
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = -20;
+        howManyCardsPlayed++;
         updateRotations();
     }
     /*
@@ -310,6 +326,8 @@ public class CoreGameplayLoop implements Screen {
         currentCard = commonDeck.drawACard();
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = 20;
+
+        howManyCardsPlayed++;
         updateRotations();
     }
 
