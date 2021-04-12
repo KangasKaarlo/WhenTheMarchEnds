@@ -16,7 +16,6 @@ public class Main extends Game {
 	Texture backgroundImage;
 	Music music;
 
-	Texture img;
 	@Override
 	public void create () {
 
@@ -25,8 +24,8 @@ public class Main extends Game {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 9,16);
-		img = new Texture("badlogic.jpg");
-		backgroundImage = new Texture("room.png");
+
+		backgroundImage = new Texture("wme_background.png");
 		music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu.mp3"));
 		music.setLooping(true);
 		music.play();
@@ -42,7 +41,6 @@ public class Main extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 	}
 	public void toggleMusicAndSFX() {
 		if (musicOn) {
