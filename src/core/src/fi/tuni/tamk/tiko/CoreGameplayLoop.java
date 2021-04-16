@@ -112,7 +112,7 @@ public class CoreGameplayLoop implements Screen {
 
         normalCamera = host.camera;
 
-        visualCard = new Sprite(new Texture("cardtest.png"));
+        visualCard = new Sprite(new Texture("card_background.png"));
         visualCard.setSize(7,7);
         visualCard.setX(normalCamera.viewportWidth /2 - visualCard.getWidth()/2);
         visualCard.setY(normalCamera.viewportHeight /2.3f - visualCard.getHeight()/2);
