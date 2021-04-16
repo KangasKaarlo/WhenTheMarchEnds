@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Game;
+import com.google.gson.Gson;
+
+import fi.tuni.tamk.tiko.utils.GameState;
 
 public class Main extends Game {
     Boolean sfxOn;
@@ -19,8 +22,9 @@ public class Main extends Game {
 	@Override
 	public void create () {
 
-		musicOn = true;
-		sfxOn = true;
+
+
+
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 9,16);
@@ -30,7 +34,19 @@ public class Main extends Game {
 		music.setLooping(true);
 		music.play();
 
-			setScreen(new MainMenu(this));
+		if (Gdx.files.local("savedGameState.txt").length() == 0) {
+			musicOn = true;
+			sfxOn = true;
+		} else {
+			Gson gson = new Gson();
+			GameState savedGame;
+			String saveJsonString = Gdx.files.local("savedGameState.txt").readString();
+			savedGame = gson.fromJson(saveJsonString, GameState.class);
+			musicOn = savedGame.isMusicOn();
+			sfxOn = savedGame.isSfxOn();
+			toggleMusicAndSFX();
+		}
+		setScreen(new MainMenu(this));
 	}
 
 	@Override

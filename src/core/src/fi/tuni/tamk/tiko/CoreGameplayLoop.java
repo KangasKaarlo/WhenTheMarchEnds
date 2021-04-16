@@ -2,6 +2,7 @@ package fi.tuni.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,9 +13,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
+import com.google.gson.Gson;
+
 
 import fi.tuni.tamk.tiko.utils.Card;
 import fi.tuni.tamk.tiko.utils.Deck;
+import fi.tuni.tamk.tiko.utils.GameState;
 
 public class CoreGameplayLoop implements Screen {
     Main host;
@@ -27,7 +31,7 @@ public class CoreGameplayLoop implements Screen {
     Deck endConditionDeck;
     Card currentCard;
 
-    int howManyCardsPlayed = 0;
+    int howManyCardsPlayed;
 
     //one camera for fonts and other for everything else
     OrthographicCamera fontCamera;
@@ -60,10 +64,41 @@ public class CoreGameplayLoop implements Screen {
         batch = host.batch;
         commonDeck = new Deck(Gdx.files.internal("deckJson.txt"));
         endConditionDeck = new Deck(Gdx.files.internal("endConditionDeck.txt"));
-        currentCard = commonDeck.drawACard();
         backgroundImage = new Texture("purple.png");
         cardHasBeenSwipedFully = true;
-        gameOver = false;
+
+        //Checks if the save file is empty
+        if (Gdx.files.local("savedGameState.txt").length() == 0) {
+            //if it is the game state is initialized
+
+            gameOver = false;
+
+            social = 50;
+            sleep = 50;
+            hunger = 50;
+            duty = 50;
+            currentCard = commonDeck.drawACard();
+            howManyCardsPlayed = 0;
+        } else {
+            //if a save file exists
+            //the game state is read
+            Gson gson = new Gson();
+            GameState savedGame;
+            String saveJsonString = Gdx.files.local("savedGameState.txt").readString();
+            savedGame= gson.fromJson(saveJsonString, GameState.class);
+
+            //and attributes are set based on the saved GameState
+            gameOver = savedGame.isGameOver();
+
+            social = savedGame.getSocial();
+            sleep = savedGame.getSleep();
+            hunger = savedGame.getHunger();
+            duty = savedGame.getDuty();
+
+            currentCard = savedGame.getCurrentCard();
+            howManyCardsPlayed = savedGame.getHowManyCardsPlayed();
+        }
+
 
         //Generates the font and sets a camera to use it with
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
@@ -85,11 +120,7 @@ public class CoreGameplayLoop implements Screen {
         cardForAnimation = new Sprite(visualCard);
         cardForAnimation.setX(-cardForAnimation.getWidth());
 
-        //initializing attributes
-        social = 50;
-        sleep = 50;
-        hunger = 50;
-        duty = 50;
+
 
         //and their displays
         socialDisplay = new Sprite(new Texture("default.png"));
@@ -304,7 +335,7 @@ public class CoreGameplayLoop implements Screen {
     /*
     Adds swipe left effect of the current card to the attribute int's and starts the card swipe animation
      */
-    private void cardSwipeLeft() {
+    public void cardSwipeLeft() {
         sleep += currentCard.getNoSleep();
         hunger += currentCard.getNoHunger();
         social += currentCard.getNoSocial();
@@ -314,11 +345,12 @@ public class CoreGameplayLoop implements Screen {
         cardSpeed = -20;
         howManyCardsPlayed++;
         updateRotations();
+        saveGame();
     }
     /*
     Adds swipe right effect of the current card to the attribute int's and starts the card swipe animation
      */
-    private void cardSwipeRight() {
+    public void cardSwipeRight() {
         sleep += currentCard.getYesSleep();
         hunger += currentCard.getYesHunger();
         social += currentCard.getYesSocial();
@@ -326,12 +358,12 @@ public class CoreGameplayLoop implements Screen {
         currentCard = commonDeck.drawACard();
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = 20;
-
         howManyCardsPlayed++;
         updateRotations();
+        saveGame();
     }
 
-    private void updateRotations() {
+    public void updateRotations() {
         for (int i = 0; i < commonDeck.getDeck().length; i++) {
             if (commonDeck.getDeck()[i].getRotation() < commonDeck.getDeck()[i].getRotationRequirement()) {
                 commonDeck.getDeck()[i].setRotation(commonDeck.getDeck()[i].getRotation() + 1);
@@ -352,6 +384,15 @@ public class CoreGameplayLoop implements Screen {
 
         dutyDisplay.setSize(displayWidth , displayHeight * (duty / 10));
 
+    }
+    @SuppressWarnings("NewApi")
+    public void saveGame() {
+        Gson gson = new Gson();
+        GameState gameStateToBeSaved = new GameState(social, sleep, hunger, duty, currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver);
+
+        String content = gson.toJson(gameStateToBeSaved);
+        FileHandle path = Gdx.files.local("savedGameState.txt");
+        path.writeString(content, false);
     }
 }
 
