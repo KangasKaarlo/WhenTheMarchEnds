@@ -375,39 +375,36 @@ public class CoreGameplayLoop implements Screen {
     Updates the attribute visuals to match the attribute int's, and makes sure the visuals are not an unsuitable size
      */
     public void updateAttributes() {
-
-        socialDisplay.setSize(displayWidth , displayHeight * (social / 10));
-
-        sleepDisplay.setSize(displayWidth , displayHeight * (sleep / 10));
-
-        hungerDisplay.setSize(displayWidth , displayHeight * (hunger / 10));
-
-        dutyDisplay.setSize(displayWidth , displayHeight * (duty / 10));
-
         if (social <= 0) {
             socialDisplay.setSize(displayWidth , 0);
+        } else if (social >= 100) {
+            socialDisplay.setSize(displayWidth , 1);
+        } else {
+            socialDisplay.setSize(displayWidth , displayHeight * (social / 10));
         }
+
         if (sleep <= 0) {
             sleepDisplay.setSize(displayWidth , 0);
+        } else if (sleep >= 100) {
+            sleepDisplay.setSize(displayWidth , 1);
+        } else {
+            sleepDisplay.setSize(displayWidth , displayHeight * (sleep / 10));
         }
+
         if (hunger <= 0) {
             hungerDisplay.setSize(displayWidth , 0);
+        } else if (hunger >= 100) {
+            hungerDisplay.setSize(displayWidth , 1);
+        } else {
+            hungerDisplay.setSize(displayWidth , displayHeight * (hunger / 10));
         }
+
         if (duty <= 0) {
             dutyDisplay.setSize(displayWidth , 0);
-
-        }
-        if (social >= 100) {
-            socialDisplay.setSize(displayWidth , 1);
-        }
-        if (sleep >= 100) {
-            sleepDisplay.setSize(displayWidth , 1);
-        }
-        if (hunger >= 100) {
-            hungerDisplay.setSize(displayWidth , 1);
-        }
-        if (duty >= 100) {
+        } else if (duty >= 100) {
             dutyDisplay.setSize(displayWidth , 1);
+        }else {
+            dutyDisplay.setSize(displayWidth , displayHeight * (duty / 10));
         }
     }
     @SuppressWarnings("NewApi")
