@@ -372,7 +372,7 @@ public class CoreGameplayLoop implements Screen {
         commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
     }
     /*
-    Updates the attribute visuals to match the attribute int's
+    Updates the attribute visuals to match the attribute int's, and makes sure the visuals are not an unsuitable size
      */
     public void updateAttributes() {
 
@@ -384,6 +384,31 @@ public class CoreGameplayLoop implements Screen {
 
         dutyDisplay.setSize(displayWidth , displayHeight * (duty / 10));
 
+        if (social <= 0) {
+            socialDisplay.setSize(displayWidth , 0);
+        }
+        if (sleep <= 0) {
+            sleepDisplay.setSize(displayWidth , 0);
+        }
+        if (hunger <= 0) {
+            hungerDisplay.setSize(displayWidth , 0);
+        }
+        if (duty <= 0) {
+            dutyDisplay.setSize(displayWidth , 0);
+
+        }
+        if (social >= 100) {
+            socialDisplay.setSize(displayWidth , 1);
+        }
+        if (sleep >= 100) {
+            sleepDisplay.setSize(displayWidth , 1);
+        }
+        if (hunger >= 100) {
+            hungerDisplay.setSize(displayWidth , 1);
+        }
+        if (duty >= 100) {
+            dutyDisplay.setSize(displayWidth , 1);
+        }
     }
     @SuppressWarnings("NewApi")
     public void saveGame() {
