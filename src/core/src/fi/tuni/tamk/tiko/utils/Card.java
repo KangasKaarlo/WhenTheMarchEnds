@@ -62,7 +62,7 @@ public class Card {
     }
 
     public Card() {
-        rotationRequirement = 5;
+        rotationRequirement = 20;
     }
     /*
     Checks if the card has NOT been played within the turn amount given in int rotationRequirement

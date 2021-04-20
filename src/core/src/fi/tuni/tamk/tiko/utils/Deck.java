@@ -55,12 +55,13 @@ public class Deck {
         int selectedWeight = MathUtils.random(totalWeightInTheBag);
         int previousWeightsCombined = 0;
         for (int i = 0; i < 4; i++) {
-            if (selectedWeight < fourSelectedCards[i].getWeight() + previousWeightsCombined) {
+            if (selectedWeight <= fourSelectedCards[i].getWeight() + previousWeightsCombined) {
                 output = fourSelectedCards[i];
             } else {
                 previousWeightsCombined += fourSelectedCards[i].getWeight();
             }
         }
+
         //returns picked card
         return output;
     }

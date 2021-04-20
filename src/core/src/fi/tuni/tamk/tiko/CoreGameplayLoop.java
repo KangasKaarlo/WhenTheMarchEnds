@@ -112,7 +112,7 @@ public class CoreGameplayLoop implements Screen {
 
         normalCamera = host.camera;
 
-        visualCard = new Sprite(new Texture("card_background.png"));
+        visualCard = new Sprite(new Texture(currentCard.getBearer()));
         visualCard.setSize(7,7);
         visualCard.setX(normalCamera.viewportWidth /2 - visualCard.getWidth()/2);
         visualCard.setY(normalCamera.viewportHeight /2.3f - visualCard.getHeight()/2);
@@ -256,14 +256,8 @@ public class CoreGameplayLoop implements Screen {
         //only font renders after this line
         batch.setProjectionMatrix(fontCamera.combined);
 
-        //The drawNewCard function has a error in it that it can draw an empty card
-        //I'll hopefully have time to fix it properly, but this works
-        try {
-            font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/8, fontCamera.viewportHeight/1.25f,
+        font.draw(batch, currentCard.getText(), fontCamera.viewportWidth/8, fontCamera.viewportHeight/1.25f,
                     500, 5, true);
-        } catch (NullPointerException e) {
-            currentCard = commonDeck.drawACard();
-        }
         font.draw(batch, "Days survived:", fontCamera.viewportWidth/2,
                 fontCamera.viewportHeight/18, 10, 0, false);
         font.draw(batch, Integer.toString(howManyCardsPlayed/3), fontCamera.viewportWidth/1.75f,
@@ -340,7 +334,9 @@ public class CoreGameplayLoop implements Screen {
         hunger += currentCard.getNoHunger();
         social += currentCard.getNoSocial();
         duty += currentCard.getNoDuty();
+        cardForAnimation.setTexture(visualCard.getTexture());
         currentCard = commonDeck.drawACard();
+        visualCard.setTexture(new Texture(currentCard.getBearer()));
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = -20;
         howManyCardsPlayed++;
@@ -355,7 +351,9 @@ public class CoreGameplayLoop implements Screen {
         hunger += currentCard.getYesHunger();
         social += currentCard.getYesSocial();
         duty += currentCard.getYesDuty();
+        cardForAnimation.setTexture(visualCard.getTexture());
         currentCard = commonDeck.drawACard();
+        visualCard.setTexture(new Texture(currentCard.getBearer()));
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = 20;
         howManyCardsPlayed++;
