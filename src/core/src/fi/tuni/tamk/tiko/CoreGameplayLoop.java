@@ -213,8 +213,7 @@ public class CoreGameplayLoop implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //updates the visuals for the attribute meters
         updateAttributes();
-        //checks if the game continues
-        checkForEndconditions();
+
 
         //animates the card swipe
         cardForAnimation.setX(cardForAnimation.getX() + cardSpeed * Gdx.graphics.getDeltaTime());
@@ -336,6 +335,8 @@ public class CoreGameplayLoop implements Screen {
         duty += currentCard.getNoDuty();
         cardForAnimation.setTexture(visualCard.getTexture());
         currentCard = commonDeck.drawACard();
+        //checks if the game continues
+        checkForEndconditions();
         visualCard.setTexture(new Texture(currentCard.getBearer()));
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = -20;
@@ -353,6 +354,8 @@ public class CoreGameplayLoop implements Screen {
         duty += currentCard.getYesDuty();
         cardForAnimation.setTexture(visualCard.getTexture());
         currentCard = commonDeck.drawACard();
+        //checks if the game continues
+        checkForEndconditions();
         visualCard.setTexture(new Texture(currentCard.getBearer()));
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = 20;
