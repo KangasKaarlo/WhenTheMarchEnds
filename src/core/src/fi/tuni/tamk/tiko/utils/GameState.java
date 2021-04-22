@@ -14,10 +14,11 @@ public class GameState {
     private final boolean tutorialCompleted;
     private final boolean firstDeath;
     private final boolean devilIntroduced;
+    private final int roundCounter;
 
     public GameState(int social, int sleep, int hunger, int duty, Card currentCard,
                      int howManyCardsPlayed, boolean musicOn, boolean sfxOn, boolean gameOver, boolean tutorialCompleted,
-                     boolean firstDeath, boolean devilItroduced) {
+                     boolean firstDeath, boolean devilIntroduced, int roundCounter) {
         this.social = social;
         this.sleep = sleep;
         this.hunger = hunger;
@@ -29,7 +30,8 @@ public class GameState {
         this.gameOver = gameOver;
         this.tutorialCompleted = tutorialCompleted;
         this.firstDeath = firstDeath;
-        this.devilIntroduced = devilItroduced;
+        this.devilIntroduced = devilIntroduced;
+        this.roundCounter = roundCounter;
     }
 
     public int getHowManyCardsPlayed() {
@@ -78,5 +80,9 @@ public class GameState {
 
     public boolean isDevilIntroduced() {
         return devilIntroduced;
+    }
+
+    public int getRoundCounter() {
+        return roundCounter;
     }
 }

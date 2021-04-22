@@ -115,6 +115,7 @@ public class CoreGameplayLoop implements Screen {
             howManyCardsPlayed = savedGame.getHowManyCardsPlayed();
             tutorialCompleted = savedGame.isTutorialCompleted();
             devilItroduced = savedGame.isDevilIntroduced();
+            roundCounter = savedGame.getRoundCounter();
         }
 
 
@@ -422,7 +423,7 @@ public class CoreGameplayLoop implements Screen {
     public void saveGame() {
         Gson gson = new Gson();
         GameState gameStateToBeSaved = new GameState(social, sleep, hunger, duty,
-                currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver, tutorialCompleted, firstDeath, devilItroduced);
+                currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver, tutorialCompleted, firstDeath, devilItroduced, roundCounter);
 
         String content = gson.toJson(gameStateToBeSaved);
         FileHandle path = Gdx.files.local("savedGameState.txt");
@@ -496,7 +497,17 @@ public class CoreGameplayLoop implements Screen {
                 currentCard = storyDeck.getDeck()[11];
                scriptCounter = 0;
             }
+        } else if (firstDeath && devilItroduced && howManyCardsPlayed == 45 && roundCounter == 7) {
+            currentCard = storyDeck.getDeck()[12];
+        }else if (firstDeath && devilItroduced && howManyCardsPlayed == 12 && roundCounter == 2) {
+            currentCard = storyDeck.getDeck()[13];
         }
+        else if (firstDeath && devilItroduced && howManyCardsPlayed == 56 && roundCounter == 6) {
+            currentCard = storyDeck.getDeck()[14];
+        }else if (firstDeath && devilItroduced && howManyCardsPlayed == 81 && roundCounter == 3) {
+            currentCard = storyDeck.getDeck()[15];
+        }
+
         else {
             currentCard = commonDeck.drawACard();
         }
