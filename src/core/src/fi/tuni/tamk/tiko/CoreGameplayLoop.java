@@ -26,7 +26,6 @@ public class CoreGameplayLoop implements Screen {
     Main host;
     SpriteBatch batch;
     BitmapFont font;
-
     Sprite visualCard;
     Sprite cardForAnimation;
     Deck commonDeck;
@@ -34,7 +33,7 @@ public class CoreGameplayLoop implements Screen {
     Deck storyDeck;
     Card currentCard;
     Sound cardSwipeAudio;
-
+    Sprite returnButton2;
     int howManyCardsPlayed;
 
     //one camera for fonts and other for everything else
@@ -109,7 +108,11 @@ public class CoreGameplayLoop implements Screen {
             howManyCardsPlayed = savedGame.getHowManyCardsPlayed();
             tutorialCompleted = savedGame.isTutorialCompleted();
         }
-
+        //batch.draw(returnButton, 530, 35, 50, 50);
+        returnButton2 = new Sprite(new Texture("wme_button-return.png"));
+        returnButton2.setSize(1, 1);
+        returnButton2.setX(7);
+        returnButton2.setY(0.25f);
 
         //Generates the font and sets a camera to use it with
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
@@ -174,15 +177,22 @@ public class CoreGameplayLoop implements Screen {
                 }
                 return super.fling(velocityX, velocityY, button);
             }
-            //tap control for "swiping the card
+            //tap control for "swiping" the card
             @Override
             public boolean tap(float x, float y, int count, int button) {
+                Vector3 touchPos = new Vector3(x, y, 0);
+                normalCamera.unproject(touchPos);
+                if (touchPos.x > returnButton2.getX() && touchPos.x < returnButton2.getX() + returnButton2.getWidth()
+                        && touchPos.y > returnButton2.getY() && touchPos.y < returnButton2.getY() + returnButton2.getHeight()) {
+
+                    host.setScreen(new MainMenu(host));
+                }
                 if (cardHasBeenSwipedFully) {
                     if (gameOver) {
                         resetAfterDeath();
                     }
-                    Vector3 touchPos = new Vector3(x, y, 0);
-                    normalCamera.unproject(touchPos);
+
+                    //normalCamera.unproject(touchPos);
                     commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getWidth()) {
@@ -198,6 +208,7 @@ public class CoreGameplayLoop implements Screen {
                         cardSwipeRight();
                     }
                 }
+
                 return super.tap(x, y, count, button);
             }
         }));
@@ -262,7 +273,7 @@ public class CoreGameplayLoop implements Screen {
         batch.draw(socialTexture, socialDisplay.getX(), socialDisplay.getY(),
                 1, 1);
         batch.draw(statbarTexture, 0, 0, 9, 1.5f);
-
+        returnButton2.draw(batch);
         //only font renders after this line
         batch.setProjectionMatrix(fontCamera.combined);
 
@@ -272,6 +283,8 @@ public class CoreGameplayLoop implements Screen {
                 fontCamera.viewportHeight/18, 10, 0, false);
         font.draw(batch, Integer.toString(howManyCardsPlayed/3), fontCamera.viewportWidth/1.75f,
                 fontCamera.viewportHeight/18, 10, 0, false);
+
+
         batch.end();
     }
     @Override

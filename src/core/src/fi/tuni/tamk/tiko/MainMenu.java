@@ -39,7 +39,7 @@ public class MainMenu implements Screen {
         settingsButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
         settingsButton.setY(5);
 
-        quitButton = new Sprite(new Texture("default.png"));
+        quitButton = new Sprite(new Texture("wme_button-quitt.png"));
         quitButton.setSize(6, 2);
         quitButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
         quitButton.setY(2);
