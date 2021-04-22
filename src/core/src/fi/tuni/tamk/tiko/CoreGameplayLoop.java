@@ -60,10 +60,13 @@ public class CoreGameplayLoop implements Screen {
     Texture backgroundImage;
     Texture statbarTexture;
     int cardSpeed;
-    Boolean cardHasBeenSwipedFully;
-    Boolean gameOver;
-    Boolean tutorialCompleted;
-    int tutorialCompletion = 0;
+    boolean cardHasBeenSwipedFully;
+    boolean gameOver;
+    boolean tutorialCompleted;
+    int scriptCounter = 0;
+    boolean firstDeath;
+    boolean devilItroduced;
+    int roundCounter;
 
     public CoreGameplayLoop(final Main host) {
         this.host = host;
@@ -87,6 +90,9 @@ public class CoreGameplayLoop implements Screen {
             duty = 50;
             tutorialCompleted = false;
             howManyCardsPlayed = 0;
+            firstDeath = false;
+            devilItroduced = false;
+            roundCounter = 0;
             drawCard();
 
         } else {
@@ -108,6 +114,7 @@ public class CoreGameplayLoop implements Screen {
             currentCard = savedGame.getCurrentCard();
             howManyCardsPlayed = savedGame.getHowManyCardsPlayed();
             tutorialCompleted = savedGame.isTutorialCompleted();
+            devilItroduced = savedGame.isDevilIntroduced();
         }
 
 
@@ -162,6 +169,9 @@ public class CoreGameplayLoop implements Screen {
             public boolean fling(float velocityX, float velocityY, int button) {
                 if (cardHasBeenSwipedFully) {
                     if (gameOver) {
+                        if (!firstDeath) {
+                            firstDeath = true;
+                        }
                         resetAfterDeath();
                     }
                     commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
@@ -179,6 +189,9 @@ public class CoreGameplayLoop implements Screen {
             public boolean tap(float x, float y, int count, int button) {
                 if (cardHasBeenSwipedFully) {
                     if (gameOver) {
+                        if (!firstDeath) {
+                            firstDeath = true;
+                        }
                         resetAfterDeath();
                     }
                     Vector3 touchPos = new Vector3(x, y, 0);
@@ -210,6 +223,11 @@ public class CoreGameplayLoop implements Screen {
             hunger = 50;
             duty = 50;
             gameOver = false;
+            if (roundCounter == 9) {
+                roundCounter = 0;
+            } else {
+                roundCounter++;
+            }
     }
 
 
@@ -311,6 +329,13 @@ public class CoreGameplayLoop implements Screen {
         hunger += currentCard.getNoHunger();
         social += currentCard.getNoSocial();
         duty += currentCard.getNoDuty();
+        if(host.sfxOn) {
+            if (currentCard.getBearer().equals("satan.png")) {
+                cardSwipeAudio.play(0.5f, 0.5f, 0);
+            }else {
+                cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);
+            }
+        }
         cardForAnimation.setTexture(visualCard.getTexture());
         currentCard = commonDeck.drawACard();
         drawCard();
@@ -320,9 +345,7 @@ public class CoreGameplayLoop implements Screen {
         howManyCardsPlayed++;
         updateRotations();
         saveGame();
-        if(host.sfxOn) {
-            cardSwipeAudio.play(0.5f, MathUtils.random(0.75f, 1.25f), 0);
-        }
+
     }
     /*
     Adds swipe right effect of the current card to the attribute int's and starts the card swipe animation
@@ -332,6 +355,13 @@ public class CoreGameplayLoop implements Screen {
         hunger += currentCard.getYesHunger();
         social += currentCard.getYesSocial();
         duty += currentCard.getYesDuty();
+        if(host.sfxOn) {
+            if (currentCard.getBearer().equals("satan.png")) {
+                cardSwipeAudio.play(0.5f, 0.5f, 0);
+            }else {
+                cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);
+            }
+        }
         cardForAnimation.setTexture(visualCard.getTexture());
         currentCard = commonDeck.drawACard();
         drawCard();
@@ -341,9 +371,7 @@ public class CoreGameplayLoop implements Screen {
         howManyCardsPlayed++;
         updateRotations();
         saveGame();
-        if(host.sfxOn) {
-            cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);
-        }
+
     }
 
     public void updateRotations() {
@@ -393,7 +421,8 @@ public class CoreGameplayLoop implements Screen {
     @SuppressWarnings("NewApi")
     public void saveGame() {
         Gson gson = new Gson();
-        GameState gameStateToBeSaved = new GameState(social, sleep, hunger, duty, currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver, tutorialCompleted);
+        GameState gameStateToBeSaved = new GameState(social, sleep, hunger, duty,
+                currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver, tutorialCompleted, firstDeath, devilItroduced);
 
         String content = gson.toJson(gameStateToBeSaved);
         FileHandle path = Gdx.files.local("savedGameState.txt");
@@ -427,20 +456,48 @@ public class CoreGameplayLoop implements Screen {
         } else if (howManyCardsPlayed/3 == 31) {
             currentCard = endConditionDeck.getDeck()[8];
         } else if(!(tutorialCompleted)) {
-                if (tutorialCompletion == 0) {
+                if (scriptCounter == 0) {
                     currentCard = storyDeck.getDeck()[2];
-                    tutorialCompletion++;
-                } else if (tutorialCompletion == 1) {
+                    scriptCounter++;
+                } else if (scriptCounter == 1) {
                     currentCard = storyDeck.getDeck()[3];
-                    tutorialCompletion++;
-                } else if (tutorialCompletion == 2) {
+                    scriptCounter++;
+                } else if (scriptCounter == 2) {
                     currentCard = storyDeck.getDeck()[0];
-                    tutorialCompletion++;
-                } else if (tutorialCompletion == 3) {
+                    scriptCounter++;
+                } else if (scriptCounter == 3) {
                     currentCard = storyDeck.getDeck()[4];
                     tutorialCompleted = true;
+                    scriptCounter = 0;
                 }
-        } else {
+        }else if (firstDeath && !devilItroduced && howManyCardsPlayed > 30 && howManyCardsPlayed <= 34) {
+            if (scriptCounter == 0) {
+                currentCard = storyDeck.getDeck()[5];
+                scriptCounter++;
+            } else if (scriptCounter == 1) {
+                currentCard = storyDeck.getDeck()[6];
+                scriptCounter++;
+            } else if (scriptCounter == 2) {
+                currentCard = storyDeck.getDeck()[7];
+                scriptCounter++;
+            } else if (scriptCounter == 3) {
+                currentCard = storyDeck.getDeck()[8];
+                devilItroduced = true;
+                scriptCounter = 0;
+            }
+        } else if (firstDeath && devilItroduced && howManyCardsPlayed > 60 && howManyCardsPlayed <= 63 && (roundCounter == 4 || roundCounter == 9)) {
+            if (scriptCounter == 0) {
+                currentCard = storyDeck.getDeck()[9];
+                scriptCounter++;
+            } else if (scriptCounter == 1) {
+                currentCard = storyDeck.getDeck()[10];
+                scriptCounter++;
+            } else if (scriptCounter == 2) {
+                currentCard = storyDeck.getDeck()[11];
+               scriptCounter = 0;
+            }
+        }
+        else {
             currentCard = commonDeck.drawACard();
         }
     }
