@@ -2,6 +2,7 @@ package fi.tuni.tamk.tiko;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.google.gson.Gson;
 
@@ -31,6 +33,7 @@ public class CoreGameplayLoop implements Screen {
     Deck endConditionDeck;
     Deck storyDeck;
     Card currentCard;
+    Sound cardSwipeAudio;
 
     int howManyCardsPlayed;
 
@@ -70,6 +73,7 @@ public class CoreGameplayLoop implements Screen {
         storyDeck = new Deck(Gdx.files.internal("storyDeck.txt"));
         backgroundImage = new Texture("purple.png");
         cardHasBeenSwipedFully = true;
+        cardSwipeAudio = Gdx.audio.newSound(Gdx.files.internal("card_swipe.mp3"));
 
         //Checks if the save file is empty
         if (Gdx.files.local("savedGameState.txt").length() == 0) {
@@ -316,6 +320,9 @@ public class CoreGameplayLoop implements Screen {
         howManyCardsPlayed++;
         updateRotations();
         saveGame();
+        if(host.sfxOn) {
+            cardSwipeAudio.play(0.5f, MathUtils.random(0.75f, 1.25f), 0);
+        }
     }
     /*
     Adds swipe right effect of the current card to the attribute int's and starts the card swipe animation
@@ -334,6 +341,9 @@ public class CoreGameplayLoop implements Screen {
         howManyCardsPlayed++;
         updateRotations();
         saveGame();
+        if(host.sfxOn) {
+            cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);
+        }
     }
 
     public void updateRotations() {
