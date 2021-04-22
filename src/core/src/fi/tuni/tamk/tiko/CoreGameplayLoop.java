@@ -29,6 +29,7 @@ public class CoreGameplayLoop implements Screen {
     Sprite cardForAnimation;
     Deck commonDeck;
     Deck endConditionDeck;
+    Deck storyDeck;
     Card currentCard;
 
     int howManyCardsPlayed;
@@ -58,12 +59,15 @@ public class CoreGameplayLoop implements Screen {
     int cardSpeed;
     Boolean cardHasBeenSwipedFully;
     Boolean gameOver;
+    Boolean tutorialCompleted;
+    int tutorialCompletion = 0;
 
     public CoreGameplayLoop(final Main host) {
         this.host = host;
         batch = host.batch;
         commonDeck = new Deck(Gdx.files.internal("deckJson.txt"));
         endConditionDeck = new Deck(Gdx.files.internal("endConditionDeck.txt"));
+        storyDeck = new Deck(Gdx.files.internal("storyDeck.txt"));
         backgroundImage = new Texture("purple.png");
         cardHasBeenSwipedFully = true;
 
@@ -77,8 +81,10 @@ public class CoreGameplayLoop implements Screen {
             sleep = 50;
             hunger = 50;
             duty = 50;
-            currentCard = commonDeck.drawACard();
+            tutorialCompleted = false;
             howManyCardsPlayed = 0;
+            drawCard();
+
         } else {
             //if a save file exists
             //the game state is read
@@ -97,6 +103,7 @@ public class CoreGameplayLoop implements Screen {
 
             currentCard = savedGame.getCurrentCard();
             howManyCardsPlayed = savedGame.getHowManyCardsPlayed();
+            tutorialCompleted = savedGame.isTutorialCompleted();
         }
 
 
@@ -263,39 +270,6 @@ public class CoreGameplayLoop implements Screen {
                 fontCamera.viewportHeight/18, 10, 0, false);
         batch.end();
     }
-    /**
-     * Checks if any of the attributes has dropped under 0
-     *     or gone over 100
-     */
-    private void checkForEndconditions() {
-        if (sleep <= 0) {
-            currentCard = endConditionDeck.getDeck()[0];
-            gameOver = true;
-        } else if (sleep >=100) {
-            currentCard = endConditionDeck.getDeck()[1];
-            gameOver = true;
-        } else if (hunger <= 0) {
-            currentCard = endConditionDeck.getDeck()[2];
-            gameOver = true;
-        } else if (hunger >=100) {
-            currentCard = endConditionDeck.getDeck()[3];
-            gameOver = true;
-        } else if (duty <= 0) {
-            currentCard = endConditionDeck.getDeck()[4];
-            gameOver = true;
-        } else if (duty >=100) {
-            currentCard = endConditionDeck.getDeck()[5];
-            gameOver = true;
-        } else if (social <= 0) {
-            currentCard = endConditionDeck.getDeck()[6];
-            gameOver = true;
-        } else if (social >=100) {
-            currentCard = endConditionDeck.getDeck()[7];
-            gameOver = true;
-        } else if (howManyCardsPlayed/3 == 31) {
-            currentCard = endConditionDeck.getDeck()[8];
-        }
-    }
     @Override
     public void resize(int width, int height) {
 
@@ -335,8 +309,7 @@ public class CoreGameplayLoop implements Screen {
         duty += currentCard.getNoDuty();
         cardForAnimation.setTexture(visualCard.getTexture());
         currentCard = commonDeck.drawACard();
-        //checks if the game continues
-        checkForEndconditions();
+        drawCard();
         visualCard.setTexture(new Texture(currentCard.getBearer()));
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = -20;
@@ -354,8 +327,7 @@ public class CoreGameplayLoop implements Screen {
         duty += currentCard.getYesDuty();
         cardForAnimation.setTexture(visualCard.getTexture());
         currentCard = commonDeck.drawACard();
-        //checks if the game continues
-        checkForEndconditions();
+        drawCard();
         visualCard.setTexture(new Texture(currentCard.getBearer()));
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = 20;
@@ -411,11 +383,56 @@ public class CoreGameplayLoop implements Screen {
     @SuppressWarnings("NewApi")
     public void saveGame() {
         Gson gson = new Gson();
-        GameState gameStateToBeSaved = new GameState(social, sleep, hunger, duty, currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver);
+        GameState gameStateToBeSaved = new GameState(social, sleep, hunger, duty, currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver, tutorialCompleted);
 
         String content = gson.toJson(gameStateToBeSaved);
         FileHandle path = Gdx.files.local("savedGameState.txt");
         path.writeString(content, false);
+    }
+    public void drawCard(){
+        if (sleep <= 0) {
+            currentCard = endConditionDeck.getDeck()[0];
+            gameOver = true;
+        } else if (sleep >=100) {
+            currentCard = endConditionDeck.getDeck()[1];
+            gameOver = true;
+        } else if (hunger <= 0) {
+            currentCard = endConditionDeck.getDeck()[2];
+            gameOver = true;
+        } else if (hunger >=100) {
+            currentCard = endConditionDeck.getDeck()[3];
+            gameOver = true;
+        } else if (duty <= 0) {
+            currentCard = endConditionDeck.getDeck()[4];
+            gameOver = true;
+        } else if (duty >=100) {
+            currentCard = endConditionDeck.getDeck()[5];
+            gameOver = true;
+        } else if (social <= 0) {
+            currentCard = endConditionDeck.getDeck()[6];
+            gameOver = true;
+        } else if (social >=100) {
+            currentCard = endConditionDeck.getDeck()[7];
+            gameOver = true;
+        } else if (howManyCardsPlayed/3 == 31) {
+            currentCard = endConditionDeck.getDeck()[8];
+        } else if(!(tutorialCompleted)) {
+                if (tutorialCompletion == 0) {
+                    currentCard = storyDeck.getDeck()[2];
+                    tutorialCompletion++;
+                } else if (tutorialCompletion == 1) {
+                    currentCard = storyDeck.getDeck()[3];
+                    tutorialCompletion++;
+                } else if (tutorialCompletion == 2) {
+                    currentCard = storyDeck.getDeck()[0];
+                    tutorialCompletion++;
+                } else if (tutorialCompletion == 3) {
+                    currentCard = storyDeck.getDeck()[4];
+                    tutorialCompleted = true;
+                }
+        } else {
+            currentCard = commonDeck.drawACard();
+        }
     }
 }
 

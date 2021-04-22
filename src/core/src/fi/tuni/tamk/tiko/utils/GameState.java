@@ -11,8 +11,9 @@ public class GameState {
     private final boolean musicOn;
     private final boolean sfxOn;
     private final boolean gameOver;
+    private final boolean tutorialCompleted;
 
-    public GameState(int social, int sleep, int hunger, int duty, Card currentCard, int howManyCardsPlayed, boolean musicOn, boolean sfxOn, boolean gameOver) {
+    public GameState(int social, int sleep, int hunger, int duty, Card currentCard, int howManyCardsPlayed, boolean musicOn, boolean sfxOn, boolean gameOver, boolean tutorialCompleted) {
         this.social = social;
         this.sleep = sleep;
         this.hunger = hunger;
@@ -22,6 +23,7 @@ public class GameState {
         this.musicOn = musicOn;
         this.sfxOn = sfxOn;
         this.gameOver = gameOver;
+        this.tutorialCompleted = tutorialCompleted;
     }
 
     public int getHowManyCardsPlayed() {
@@ -58,5 +60,9 @@ public class GameState {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public boolean isTutorialCompleted() {
+        return tutorialCompleted;
     }
 }
