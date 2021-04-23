@@ -27,11 +27,14 @@ public class CoreGameplayLoop implements Screen {
     SpriteBatch batch;
     BitmapFont font;
 
-    Sprite visualCard;
-    Sprite cardForAnimation;
+    //Decs that include all the cards for the game
     Deck commonDeck;
     Deck endConditionDeck;
     Deck storyDeck;
+
+    Sprite visualCard;
+    Sprite cardForAnimation;
+
     Card currentCard;
     Sound cardSwipeAudio;
 
@@ -175,7 +178,6 @@ public class CoreGameplayLoop implements Screen {
                         }
                         resetAfterDeath();
                     }
-                    commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
                     if (velocityX <0) {
 
                         cardSwipeLeft();
@@ -197,7 +199,6 @@ public class CoreGameplayLoop implements Screen {
                     }
                     Vector3 touchPos = new Vector3(x, y, 0);
                     normalCamera.unproject(touchPos);
-                    commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getWidth()) {
                         if (howManyCardsPlayed/3 == 31) {
@@ -323,13 +324,19 @@ public class CoreGameplayLoop implements Screen {
         backgroundImage.dispose();
     }
     /*
-    Adds swipe left effect of the current card to the attribute int's and starts the card swipe animation
+    Adds swipe left effect of the current card to the attribute int's, draws a new card and starts the card swipe animation
      */
     public void cardSwipeLeft() {
+        //Adds the card values to the attributes
         sleep += currentCard.getNoSleep();
         hunger += currentCard.getNoHunger();
         social += currentCard.getNoSocial();
         duty += currentCard.getNoDuty();
+        //updates card rotations
+        //important that this is done before for drawing a new card
+        updateRotations();
+        //Sound effect for card swipe
+        //important that this is done before for drawing a new card
         if(host.sfxOn) {
             if (currentCard.getBearer().equals("satan.png")) {
                 cardSwipeAudio.play(0.5f, 0.5f, 0);
@@ -337,14 +344,17 @@ public class CoreGameplayLoop implements Screen {
                 cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);
             }
         }
+        //sets texture for the card animation
         cardForAnimation.setTexture(visualCard.getTexture());
-        currentCard = commonDeck.drawACard();
+
         drawCard();
+        //Sets the new texture to the card
         visualCard.setTexture(new Texture(currentCard.getBearer()));
+        //starts the swipe animation
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = -20;
+
         howManyCardsPlayed++;
-        updateRotations();
         saveGame();
 
     }
@@ -352,10 +362,16 @@ public class CoreGameplayLoop implements Screen {
     Adds swipe right effect of the current card to the attribute int's and starts the card swipe animation
      */
     public void cardSwipeRight() {
+        //Adds the card values to the attributes
         sleep += currentCard.getYesSleep();
         hunger += currentCard.getYesHunger();
         social += currentCard.getYesSocial();
         duty += currentCard.getYesDuty();
+        //updates card rotations
+        //important that this is done before for drawing a new card
+        updateRotations();
+        //Sound effect for card swipe
+        //important that this is done before for drawing a new card
         if(host.sfxOn) {
             if (currentCard.getBearer().equals("satan.png")) {
                 cardSwipeAudio.play(0.5f, 0.5f, 0);
@@ -363,14 +379,17 @@ public class CoreGameplayLoop implements Screen {
                 cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);
             }
         }
+        //sets texture for the card animation
         cardForAnimation.setTexture(visualCard.getTexture());
-        currentCard = commonDeck.drawACard();
+
         drawCard();
+        //Sets the new texture to the card
         visualCard.setTexture(new Texture(currentCard.getBearer()));
+        //starts the swipe animation
         cardForAnimation.setX(visualCard.getX());
         cardSpeed = 20;
+
         howManyCardsPlayed++;
-        updateRotations();
         saveGame();
 
     }
@@ -419,6 +438,10 @@ public class CoreGameplayLoop implements Screen {
             dutyDisplay.setSize(displayWidth , displayHeight * (duty / 10));
         }
     }
+
+    /**
+     * Saves the game to savedGameState.txt
+     */
     @SuppressWarnings("NewApi")
     public void saveGame() {
         Gson gson = new Gson();
@@ -429,7 +452,13 @@ public class CoreGameplayLoop implements Screen {
         FileHandle path = Gdx.files.local("savedGameState.txt");
         path.writeString(content, false);
     }
+
+    /**
+     * Draws a new card.
+     * Includes some "scripting" so the drawn card is not always random
+     */
     public void drawCard(){
+        // Checks if any end condition is reached
         if (sleep <= 0) {
             currentCard = endConditionDeck.getDeck()[0];
             gameOver = true;
@@ -456,6 +485,7 @@ public class CoreGameplayLoop implements Screen {
             gameOver = true;
         } else if (howManyCardsPlayed/3 == 31) {
             currentCard = endConditionDeck.getDeck()[8];
+         //If the tutorial is not yet completed, plays the tutorial
         } else if(!(tutorialCompleted)) {
                 if (scriptCounter == 0) {
                     currentCard = storyDeck.getDeck()[2];
@@ -471,6 +501,7 @@ public class CoreGameplayLoop implements Screen {
                     tutorialCompleted = true;
                     scriptCounter = 0;
                 }
+         //Scripted conversation with satan that introduces our lovable villain
         }else if (firstDeath && !devilItroduced && howManyCardsPlayed > 30 && howManyCardsPlayed <= 34) {
             if (scriptCounter == 0) {
                 currentCard = storyDeck.getDeck()[5];
@@ -486,6 +517,7 @@ public class CoreGameplayLoop implements Screen {
                 devilItroduced = true;
                 scriptCounter = 0;
             }
+        //here satan quotes Rolling stones lyrics
         } else if (firstDeath && devilItroduced && howManyCardsPlayed > 60 && howManyCardsPlayed <= 63 && (roundCounter == 4 || roundCounter == 9)) {
             if (scriptCounter == 0) {
                 currentCard = storyDeck.getDeck()[9];
@@ -497,6 +529,7 @@ public class CoreGameplayLoop implements Screen {
                 currentCard = storyDeck.getDeck()[11];
                scriptCounter = 0;
             }
+         // random interactions with satan
         } else if (firstDeath && devilItroduced && howManyCardsPlayed == 45 && roundCounter == 7) {
             currentCard = storyDeck.getDeck()[12];
         }else if (firstDeath && devilItroduced && howManyCardsPlayed == 12 && roundCounter == 2) {
@@ -507,7 +540,7 @@ public class CoreGameplayLoop implements Screen {
         }else if (firstDeath && devilItroduced && howManyCardsPlayed == 81 && roundCounter == 3) {
             currentCard = storyDeck.getDeck()[15];
         }
-
+        //if no "script" is activated, then a random card is drawn
         else {
             currentCard = commonDeck.drawACard();
         }
