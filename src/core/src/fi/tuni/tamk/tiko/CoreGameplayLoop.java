@@ -175,6 +175,8 @@ public class CoreGameplayLoop implements Screen {
             //Input for swiping the card
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
+                Vector3 touchPos = new Vector3(velocityX, velocityY, 0);
+                normalCamera.unproject(touchPos);
                 if (cardHasBeenSwipedFully) {
                     if (gameOver) {
                         if (!firstDeath) {
@@ -209,12 +211,10 @@ public class CoreGameplayLoop implements Screen {
                         resetAfterDeath();
                     }
 
-                    normalCamera.unproject(touchPos);
-
                     commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
 
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
-                            && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getWidth()) {
+                            && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
                         if (howManyCardsPlayed/3 == 31) {
                             host.setScreen(new MainMenu(host));
                         }
@@ -227,7 +227,6 @@ public class CoreGameplayLoop implements Screen {
                         cardSwipeRight();
                     }
                 }
-
                 return super.tap(x, y, count, button);
             }
         }));
