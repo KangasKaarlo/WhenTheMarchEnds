@@ -27,7 +27,7 @@ public class CoreGameplayLoop implements Screen {
     SpriteBatch batch;
     BitmapFont font;
 
-    //Decs that include all the cards for the game
+    //Decks that include all the cards for the game
     Sprite visualCard;
     Sprite cardForAnimation;
 
@@ -120,7 +120,7 @@ public class CoreGameplayLoop implements Screen {
             devilItroduced = savedGame.isDevilIntroduced();
             roundCounter = savedGame.getRoundCounter();
         }
-        //batch.draw(returnButton, 530, 35, 50, 50);
+        // Adds a return button to the game
         returnButton2 = new Sprite(new Texture("wme_button-return.png"));
         returnButton2.setSize(1, 1);
         returnButton2.setX(7);
@@ -198,6 +198,7 @@ public class CoreGameplayLoop implements Screen {
             public boolean tap(float x, float y, int count, int button) {
                 Vector3 touchPos = new Vector3(x, y, 0);
                 normalCamera.unproject(touchPos);
+                //Makes it so that tapping the return button will send the user back to the main menu
                 if (touchPos.x > returnButton2.getX() && touchPos.x < returnButton2.getX() + returnButton2.getWidth()
                         && touchPos.y > returnButton2.getY() && touchPos.y < returnButton2.getY() + returnButton2.getHeight()) {
 
@@ -425,7 +426,7 @@ public class CoreGameplayLoop implements Screen {
         commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
     }
     /*
-    Updates the attribute visuals to match the attribute int's, and makes sure the visuals are not an unsuitable size
+    Updates the attribute visuals to match the attribute int's, and makes sure the visuals are not an unsuitable size, such as too big or too small
      */
     public void updateAttributes() {
         if (social <= 0) {

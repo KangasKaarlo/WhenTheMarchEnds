@@ -44,6 +44,8 @@ public class SettingsMenu implements Screen {
         yes = new Texture("wme_button-yes.png");
         no = new Texture("wme_button-no.png");
 
+        //adds 3 buttons to the settings menu
+
         sfxButton = new Sprite(yes);
         sfxButton.setSize(2, 2);
         sfxButton.setX(camera.viewportWidth / 2);
@@ -62,6 +64,7 @@ public class SettingsMenu implements Screen {
         updateTextures();
 
         backgroundImage = new Texture("room.png");
+        //Makes it so that the buttons of the settings menu can be interacted with. Sfx- and music button change sound settings, and the return button returns the user to the main menu
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
         @Override
             public boolean tap(float x, float y, int count, int button) {

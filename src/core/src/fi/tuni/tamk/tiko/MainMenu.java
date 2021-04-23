@@ -28,7 +28,7 @@ public class MainMenu implements Screen {
         this.host = host;
         batch = host.batch;
         camera = host.camera;
-
+        // Adds 3 buttons to the main menu.
         playButton = new Sprite(new Texture("wme_button-start.png"));
         playButton.setSize(6, 2);
         playButton.setX(camera.viewportWidth/2 - playButton.getWidth()/2);
@@ -54,6 +54,8 @@ public class MainMenu implements Screen {
                 Vector3 touchPos = new Vector3(x, y, 0);
                 camera.unproject(touchPos);
 
+                // Pressing the playButton will start the game, pressing the settingsButton will open the settings menu, and pressing the quit button will end the game.
+
                 if (touchPos.x > playButton.getX() && touchPos.x < playButton.getX() + playButton.getWidth()
                         && touchPos.y > playButton.getY() && touchPos.y < playButton.getY() + playButton.getHeight()) {
                     host.setScreen(new CoreGameplayLoop(host));
@@ -66,7 +68,7 @@ public class MainMenu implements Screen {
 
                 if (touchPos.x > quitButton.getX() && touchPos.x < quitButton.getX() + quitButton.getWidth()
                         && touchPos.y > quitButton.getY() && touchPos.y < quitButton.getY() + quitButton.getHeight()) {
-                    //Quit button need to quit the game
+
 
                 }
                 return super.tap(x, y,1, button);
