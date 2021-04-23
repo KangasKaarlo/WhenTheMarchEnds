@@ -247,7 +247,6 @@ public class CoreGameplayLoop implements Screen {
             }
     }
 
-
     @Override
     public void show() {
 
@@ -355,7 +354,16 @@ public class CoreGameplayLoop implements Screen {
         //Sound effect for card swipe
         //important that this is done before for drawing a new card
         if(host.sfxOn) {
-            if (currentCard.getBearer().equals("satan.png")) {
+            //sound effect is played lower if the card involves satan
+            if (currentCard.getBearer().equals("satan.png") ||
+                    currentCard.getBearer().equals("full_social.png") ||
+                    currentCard.getBearer().equals("full_hunger.png") ||
+                    currentCard.getBearer().equals("full_duty.png") ||
+                    currentCard.getBearer().equals("full_sleep.png") ||
+                    currentCard.getBearer().equals("deathFullDuty.png") ||
+                    currentCard.getBearer().equals("deathFullHunger.png") ||
+                    currentCard.getBearer().equals("deathFullSleep.png") ||
+                    currentCard.getBearer().equals("deathFullSocial.png")) {
                 cardSwipeAudio.play(0.5f, 0.5f, 0);
             }else {
                 cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);

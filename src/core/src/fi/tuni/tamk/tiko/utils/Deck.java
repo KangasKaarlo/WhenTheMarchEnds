@@ -1,6 +1,5 @@
 package fi.tuni.tamk.tiko.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
 import com.google.gson.Gson;
@@ -16,7 +15,11 @@ public class Deck {
     }
 
 
-
+    /**
+     * Picks a card from the deck.
+     * Cards with larger Weight value have a bigger change to be big
+     * @return a card from the deck
+     */
     public Card drawACard() {
         Card output = new Card();
         //finds all cards that can be played
