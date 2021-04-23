@@ -211,8 +211,6 @@ public class CoreGameplayLoop implements Screen {
                         resetAfterDeath();
                     }
 
-                    commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
-
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
                         if (howManyCardsPlayed/3 == 31) {
@@ -514,16 +512,20 @@ public class CoreGameplayLoop implements Screen {
                 if (scriptCounter == 0) {
                     currentCard = storyDeck.getDeck()[2];
                     scriptCounter++;
+                    howManyCardsPlayed = 0;
                 } else if (scriptCounter == 1) {
                     currentCard = storyDeck.getDeck()[3];
                     scriptCounter++;
+                    howManyCardsPlayed = 0;
                 } else if (scriptCounter == 2) {
                     currentCard = storyDeck.getDeck()[0];
                     scriptCounter++;
+                    howManyCardsPlayed = 0;
                 } else if (scriptCounter == 3) {
                     currentCard = storyDeck.getDeck()[4];
                     tutorialCompleted = true;
                     scriptCounter = 0;
+                    howManyCardsPlayed = 0;
                 }
          //Scripted conversation with satan that introduces our lovable villain
         }else if (firstDeath && !devilItroduced && howManyCardsPlayed > 30 && howManyCardsPlayed <= 34) {
