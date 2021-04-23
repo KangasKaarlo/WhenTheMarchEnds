@@ -26,19 +26,14 @@ public class CoreGameplayLoop implements Screen {
     Main host;
     SpriteBatch batch;
     BitmapFont font;
-<<<<<<< HEAD
 
     //Decs that include all the cards for the game
-=======
     Sprite visualCard;
     Sprite cardForAnimation;
->>>>>>> 8946dfc832d9132897f445e3978d970d14c3636e
+
     Deck commonDeck;
     Deck endConditionDeck;
     Deck storyDeck;
-
-    Sprite visualCard;
-    Sprite cardForAnimation;
 
     Card currentCard;
     Sound cardSwipeAudio;
@@ -213,14 +208,11 @@ public class CoreGameplayLoop implements Screen {
                         }
                         resetAfterDeath();
                     }
-<<<<<<< HEAD
-                    Vector3 touchPos = new Vector3(x, y, 0);
-                    normalCamera.unproject(touchPos);
-=======
 
-                    //normalCamera.unproject(touchPos);
+                    normalCamera.unproject(touchPos);
+
                     commonDeck.getDeck()[currentCard.getIndex()].setRotation(0);
->>>>>>> 8946dfc832d9132897f445e3978d970d14c3636e
+
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getWidth()) {
                         if (howManyCardsPlayed/3 == 31) {
