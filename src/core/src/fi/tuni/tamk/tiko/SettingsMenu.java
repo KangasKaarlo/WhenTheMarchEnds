@@ -54,7 +54,7 @@ public class SettingsMenu implements Screen {
         musicButton.setX(camera.viewportWidth / 2);
         musicButton.setY(5);
 
-        returnButton = new Sprite(new Texture("default.png"));
+        returnButton = new Sprite(new Texture("wme_button-return.png"));
         returnButton.setSize(6, 2);
         returnButton.setX(camera.viewportWidth / 2 - returnButton.getWidth() / 2);
         returnButton.setY(2);
