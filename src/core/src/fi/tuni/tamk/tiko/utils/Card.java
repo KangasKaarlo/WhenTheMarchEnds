@@ -1,7 +1,8 @@
 package fi.tuni.tamk.tiko.utils;
 
-import com.badlogic.gdx.graphics.Texture;
-
+/**
+ * Card is the basic unit of the game and includes a bunch of variables necessary for the game
+ */
 public class Card {
     //variable to help debugging
     private int index;

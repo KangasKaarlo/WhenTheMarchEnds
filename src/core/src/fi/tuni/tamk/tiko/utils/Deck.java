@@ -4,7 +4,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
 import com.google.gson.Gson;
 
-
+/**
+ * Deck includes a Card array and a function to draw a semi random Card from it
+ */
 public class Deck {
     Card[] deck;
     Gson gson = new Gson();
