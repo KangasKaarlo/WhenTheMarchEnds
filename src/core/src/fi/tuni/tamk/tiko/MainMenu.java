@@ -67,7 +67,7 @@ public class MainMenu implements Screen {
 
                 if (touchPos.x > quitButton.getX() && touchPos.x < quitButton.getX() + quitButton.getWidth()
                         && touchPos.y > quitButton.getY() && touchPos.y < quitButton.getY() + quitButton.getHeight()) {
-
+                        System.exit(0);
 
                 }
                 return super.tap(x, y,1, button);
