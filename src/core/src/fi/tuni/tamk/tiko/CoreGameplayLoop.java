@@ -135,9 +135,9 @@ public class CoreGameplayLoop implements Screen {
         }
         // Adds a return button to the game
         returnButton2 = new Sprite(new Texture("wme_button-return-small.png"));
-        returnButton2.setSize(1, 1);
-        returnButton2.setX(7);
-        returnButton2.setY(0.25f);
+        returnButton2.setSize(1.2f, 1.2f);
+        returnButton2.setX(7f);
+        returnButton2.setY(0.20f);
 
         //Generates the font and sets a camera to use it with
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
