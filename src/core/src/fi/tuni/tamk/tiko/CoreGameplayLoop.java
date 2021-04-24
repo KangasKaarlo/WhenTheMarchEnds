@@ -23,53 +23,66 @@ import fi.tuni.tamk.tiko.utils.Deck;
 import fi.tuni.tamk.tiko.utils.GameState;
 
 public class CoreGameplayLoop implements Screen {
-    Main host;
-    SpriteBatch batch;
-    BitmapFont font;
+    private Main host;
+    private SpriteBatch batch;
+    private BitmapFont font;
+
+    //card sprites
+    //the stationary card  in the middle of the screen
+    private Sprite visualCard;
+    //the sprite that animates the swipe
+    private Sprite cardForAnimation;
+
+
+    private Sprite returnButton2;
 
     //Decks that include all the cards for the game
-    Sprite visualCard;
-    Sprite cardForAnimation;
+    private Deck commonDeck;
+    private Deck endConditionDeck;
+    private Deck storyDeck;
 
-    Deck commonDeck;
-    Deck endConditionDeck;
-    Deck storyDeck;
+    //Card that is currently drawn
+    private Card currentCard;
 
-    Card currentCard;
-    Sound cardSwipeAudio;
-    Sprite returnButton2;
-    int howManyCardsPlayed;
+    //audio files
+    private Sound cardSwipeAudio;
+
+
+
 
     //one camera for fonts and other for everything else
-    OrthographicCamera fontCamera;
-    OrthographicCamera normalCamera;
+    private OrthographicCamera fontCamera;
+    private OrthographicCamera normalCamera;
     //Attributes
-    int social;
-    int sleep;
-    int hunger;
-    int duty;
+    private int social;
+    private int sleep;
+    private int hunger;
+    private int duty;
     //displays for attributes
-    int displayWidth = 1;
-    float displayHeight = 0.1f;
-    Sprite socialDisplay;
-    Sprite sleepDisplay;
-    Sprite hungerDisplay;
-    Sprite dutyDisplay;
-    Texture socialTexture;
-    Texture sleepTexture;
-    Texture hungerTexture;
-    Texture dutyTexture;
+    private int displayWidth = 1;
+    private float displayHeight = 0.1f;
+    private Sprite socialDisplay;
+    private Sprite sleepDisplay;
+    private Sprite hungerDisplay;
+    private Sprite dutyDisplay;
+    private Texture socialTexture;
+    private Texture sleepTexture;
+    private Texture hungerTexture;
+    private Texture dutyTexture;
 
-    Texture backgroundImage;
-    Texture statbarTexture;
-    int cardSpeed;
-    boolean cardHasBeenSwipedFully;
-    boolean gameOver;
-    boolean tutorialCompleted;
-    int scriptCounter = 0;
-    boolean firstDeath;
-    boolean devilItroduced;
-    int roundCounter;
+    private Texture backgroundImage;
+    private Texture statbarTexture;
+
+    //utility variable to track player progress and help certain functions to work
+    private int cardSpeed;
+    private boolean cardHasBeenSwipedFully;
+    private boolean gameOver;
+    private boolean tutorialCompleted;
+    private int scriptCounter = 0;
+    private boolean firstDeath;
+    private boolean devilIntroduced;
+    private int roundCounter;
+    private int howManyCardsPlayed;
 
     public CoreGameplayLoop(final Main host) {
         this.host = host;
@@ -94,7 +107,7 @@ public class CoreGameplayLoop implements Screen {
             tutorialCompleted = false;
             howManyCardsPlayed = 0;
             firstDeath = false;
-            devilItroduced = false;
+            devilIntroduced = false;
             roundCounter = 0;
             drawCard();
 
@@ -117,7 +130,7 @@ public class CoreGameplayLoop implements Screen {
             currentCard = savedGame.getCurrentCard();
             howManyCardsPlayed = savedGame.getHowManyCardsPlayed();
             tutorialCompleted = savedGame.isTutorialCompleted();
-            devilItroduced = savedGame.isDevilIntroduced();
+            devilIntroduced = savedGame.isDevilIntroduced();
             roundCounter = savedGame.getRoundCounter();
         }
         // Adds a return button to the game
@@ -146,9 +159,7 @@ public class CoreGameplayLoop implements Screen {
         cardForAnimation = new Sprite(visualCard);
         cardForAnimation.setX(-cardForAnimation.getWidth());
 
-
-
-        //and their displays
+        //Attribute displays
         socialDisplay = new Sprite(new Texture("default.png"));
         sleepDisplay = new Sprite(new Texture("default.png"));
         hungerDisplay = new Sprite(new Texture("default.png"));
@@ -163,12 +174,14 @@ public class CoreGameplayLoop implements Screen {
         dutyDisplay.setX(7);
         dutyDisplay.setY(14);
 
-
         socialTexture = new Texture("wme_icon_social.png");
         sleepTexture = new Texture("wme_icon_sleep.png");
         hungerTexture = new Texture("wme_icon_food.png");
         dutyTexture = new Texture("wme_icon_duty.png");
+
+
         statbarTexture = new Texture("wme_statbar_gold.png");
+
         //this detects if the screen is swiped
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
 
@@ -177,6 +190,7 @@ public class CoreGameplayLoop implements Screen {
             public boolean fling(float velocityX, float velocityY, int button) {
                 Vector3 touchPos = new Vector3(velocityX, velocityY, 0);
                 normalCamera.unproject(touchPos);
+                //does not allow to swipe a new card before the animation for the previous one has finished
                 if (cardHasBeenSwipedFully) {
                     if (gameOver) {
                         if (!firstDeath) {
@@ -204,6 +218,7 @@ public class CoreGameplayLoop implements Screen {
 
                     host.setScreen(new MainMenu(host));
                 }
+                //does not allow to swipe a new card before the animation for the previous one has finished
                 if (cardHasBeenSwipedFully) {
                     if (gameOver) {
                         if (!firstDeath) {
@@ -214,12 +229,14 @@ public class CoreGameplayLoop implements Screen {
 
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
+                        //if the game is won the player is returned to main menu
                         if (howManyCardsPlayed/3 == 31) {
                             host.setScreen(new MainMenu(host));
                         }
                         cardSwipeLeft();
                     } else if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2 + visualCard.getWidth()
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
+                        //if the game is won the player is returned to main menu
                         if (howManyCardsPlayed/3 == 31) {
                             host.setScreen(new MainMenu(host));
                         }
@@ -231,6 +248,10 @@ public class CoreGameplayLoop implements Screen {
         }));
     }
 
+    /**
+     * Resets all the attributes, card counters amd boolean gameOver to their default values.
+     * int roundCounter get's a step forward
+     */
     private void resetAfterDeath() {
             howManyCardsPlayed = 0;
             social = 50;
@@ -469,7 +490,7 @@ public class CoreGameplayLoop implements Screen {
     public void saveGame() {
         Gson gson = new Gson();
         GameState gameStateToBeSaved = new GameState(social, sleep, hunger, duty,
-                currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver, tutorialCompleted, firstDeath, devilItroduced, roundCounter);
+                currentCard, howManyCardsPlayed, host.musicOn, host.sfxOn, gameOver, tutorialCompleted, firstDeath, devilIntroduced, roundCounter);
 
         String content = gson.toJson(gameStateToBeSaved);
         FileHandle path = Gdx.files.local("savedGameState.txt");
@@ -529,7 +550,7 @@ public class CoreGameplayLoop implements Screen {
                     howManyCardsPlayed = 0;
                 }
          //Scripted conversation with satan that introduces our lovable villain
-        }else if (firstDeath && !devilItroduced && howManyCardsPlayed > 30 && howManyCardsPlayed <= 34) {
+        }else if (firstDeath && !devilIntroduced && howManyCardsPlayed > 30 && howManyCardsPlayed <= 34) {
             if (scriptCounter == 0) {
                 currentCard = storyDeck.getDeck()[5];
                 scriptCounter++;
@@ -541,11 +562,11 @@ public class CoreGameplayLoop implements Screen {
                 scriptCounter++;
             } else if (scriptCounter == 3) {
                 currentCard = storyDeck.getDeck()[8];
-                devilItroduced = true;
+                devilIntroduced = true;
                 scriptCounter = 0;
             }
         //here satan quotes Rolling stones lyrics
-        } else if (firstDeath && devilItroduced && howManyCardsPlayed > 60 && howManyCardsPlayed <= 63 && (roundCounter == 4 || roundCounter == 9)) {
+        } else if (firstDeath && devilIntroduced && howManyCardsPlayed > 60 && howManyCardsPlayed <= 63 && (roundCounter == 4 || roundCounter == 9)) {
             if (scriptCounter == 0) {
                 currentCard = storyDeck.getDeck()[9];
                 scriptCounter++;
@@ -557,14 +578,14 @@ public class CoreGameplayLoop implements Screen {
                scriptCounter = 0;
             }
          // random interactions with satan
-        } else if (firstDeath && devilItroduced && howManyCardsPlayed == 45 && roundCounter == 7) {
+        } else if (firstDeath && devilIntroduced && howManyCardsPlayed == 45 && roundCounter == 7) {
             currentCard = storyDeck.getDeck()[12];
-        }else if (firstDeath && devilItroduced && howManyCardsPlayed == 12 && roundCounter == 2) {
+        }else if (firstDeath && devilIntroduced && howManyCardsPlayed == 12 && roundCounter == 2) {
             currentCard = storyDeck.getDeck()[13];
         }
-        else if (firstDeath && devilItroduced && howManyCardsPlayed == 56 && roundCounter == 6) {
+        else if (firstDeath && devilIntroduced && howManyCardsPlayed == 56 && roundCounter == 6) {
             currentCard = storyDeck.getDeck()[14];
-        }else if (firstDeath && devilItroduced && howManyCardsPlayed == 81 && roundCounter == 3) {
+        }else if (firstDeath && devilIntroduced && howManyCardsPlayed == 81 && roundCounter == 3) {
             currentCard = storyDeck.getDeck()[15];
         }
         //if no "script" is activated, then a random card is drawn

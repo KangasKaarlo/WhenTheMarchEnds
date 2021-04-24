@@ -50,7 +50,6 @@ public class MainMenu implements Screen {
             public boolean tap(float x, float y, int count, int button) {
                 //the game thinks that the players finger leaving after pressing start game is a swipe
                 //this fixes that
-
                 Vector3 touchPos = new Vector3(x, y, 0);
                 camera.unproject(touchPos);
 

@@ -64,7 +64,8 @@ public class SettingsMenu implements Screen {
         updateTextures();
 
         backgroundImage = new Texture("room.png");
-        //Makes it so that the buttons of the settings menu can be interacted with. Sfx- and music button change sound settings, and the return button returns the user to the main menu
+        //Makes it so that the buttons of the settings menu can be interacted with.
+        //Sfx- and music button change sound settings, and the return button returns the user to the main menu
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
         @Override
             public boolean tap(float x, float y, int count, int button) {
