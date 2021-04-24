@@ -134,7 +134,7 @@ public class CoreGameplayLoop implements Screen {
             roundCounter = savedGame.getRoundCounter();
         }
         // Adds a return button to the game
-        returnButton2 = new Sprite(new Texture("wme_button-return.png"));
+        returnButton2 = new Sprite(new Texture("wme_button-return-small.png"));
         returnButton2.setSize(1, 1);
         returnButton2.setX(7);
         returnButton2.setY(0.25f);
