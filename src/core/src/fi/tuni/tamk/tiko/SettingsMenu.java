@@ -13,18 +13,22 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.input.GestureDetector;
 
+/**
+ * Settings menu that includes options to turn on/off music and sfx
+ * also has a button to return to main menu
+ */
 public class SettingsMenu implements Screen {
-    Sprite sfxButton;
-    Sprite musicButton;
-    Sprite returnButton;
-    OrthographicCamera camera;
-    Main host;
-    SpriteBatch batch;
-    Texture backgroundImage;
-    Texture yes;
-    Texture no;
-    BitmapFont font;
-    OrthographicCamera fontCamera;
+    private Sprite sfxButton;
+    private Sprite musicButton;
+    private Sprite returnButton;
+    private OrthographicCamera camera;
+    private  Main host;
+    private SpriteBatch batch;
+    private Texture backgroundImage;
+    private Texture yes;
+    private Texture no;
+    private BitmapFont font;
+    private OrthographicCamera fontCamera;
     public SettingsMenu(final Main host) {
 
         this.host = host;

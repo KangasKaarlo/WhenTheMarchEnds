@@ -34,6 +34,7 @@ public class Main extends Game {
 		music.setLooping(true);
 		music.play();
 
+		//Checks if a previous save exists and sets music and sound effect volumes accordingly
 		if (Gdx.files.local("savedGameState.txt").length() == 0) {
 			musicOn = true;
 			sfxOn = true;
@@ -58,6 +59,10 @@ public class Main extends Game {
 	public void dispose () {
 		batch.dispose();
 	}
+
+	/**
+	 * Toggles music and sfx on or off
+	 */
 	public void toggleMusicAndSFX() {
 		if (musicOn) {
 			music.setVolume(1);

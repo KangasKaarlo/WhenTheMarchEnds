@@ -13,14 +13,17 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.awt.Rectangle;
 
+/**
+ * Main menu includes buttons to start game, go to settings menu and to quit the game
+ */
 public class MainMenu implements Screen {
-    Sprite playButton;
-    Sprite settingsButton;
-    Sprite quitButton;
-    SpriteBatch batch;
-    OrthographicCamera camera;
-    Texture backgroundImage;
-    Music music;
+    private Sprite playButton;
+    private Sprite settingsButton;
+    private Sprite quitButton;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private Texture backgroundImage;
+    private Music music;
 
     Main host;
 
@@ -53,7 +56,9 @@ public class MainMenu implements Screen {
                 Vector3 touchPos = new Vector3(x, y, 0);
                 camera.unproject(touchPos);
 
-                // Pressing the playButton will start the game, pressing the settingsButton will open the settings menu, and pressing the quit button will end the game.
+                // Pressing the playButton will start the game,
+                // pressing the settingsButton will open the settings menu,
+                // and pressing the quit button will end the game.
 
                 if (touchPos.x > playButton.getX() && touchPos.x < playButton.getX() + playButton.getWidth()
                         && touchPos.y > playButton.getY() && touchPos.y < playButton.getY() + playButton.getHeight()) {

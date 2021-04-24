@@ -1,6 +1,8 @@
 package fi.tuni.tamk.tiko.utils;
 
-
+/**
+ * GameState includes all necessary information for creating a safe file
+ */
 public class GameState {
     private final int howManyCardsPlayed;
     private final int social;
