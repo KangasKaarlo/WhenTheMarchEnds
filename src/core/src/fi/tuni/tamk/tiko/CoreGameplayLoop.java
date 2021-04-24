@@ -185,7 +185,6 @@ public class CoreGameplayLoop implements Screen {
 
         //this detects if the screen is swiped
         Gdx.input.setInputProcessor(new GestureDetector(new GestureDetector.GestureAdapter() {
-
             //Input for swiping the card
             @Override
             public boolean fling(float velocityX, float velocityY, int button) {
@@ -200,7 +199,6 @@ public class CoreGameplayLoop implements Screen {
                         resetAfterDeath();
                     }
                     if (velocityX <0) {
-
                         cardSwipeLeft();
                     }else if (velocityX > 0) {
                         cardSwipeRight();
@@ -216,7 +214,6 @@ public class CoreGameplayLoop implements Screen {
                 //Makes it so that tapping the return button will send the user back to the main menu
                 if (touchPos.x > returnButton2.getX() && touchPos.x < returnButton2.getX() + returnButton2.getWidth()
                         && touchPos.y > returnButton2.getY() && touchPos.y < returnButton2.getY() + returnButton2.getHeight()) {
-
                     host.setScreen(new MainMenu(host));
                 }
                 //does not allow to swipe a new card before the animation for the previous one has finished
@@ -227,7 +224,6 @@ public class CoreGameplayLoop implements Screen {
                         }
                         resetAfterDeath();
                     }
-
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
                         //if the game is won the player is returned to main menu
@@ -374,18 +370,17 @@ public class CoreGameplayLoop implements Screen {
         //Sound effect for card swipe
         //important that this is done before for drawing a new card
         if(host.sfxOn) {
-            //sound effect is played lower if the card involves satan
             if (currentCard.getBearer().equals("satan.png") ||
                     currentCard.getBearer().equals("full_social.png") ||
                     currentCard.getBearer().equals("full_hunger.png") ||
                     currentCard.getBearer().equals("full_duty.png") ||
                     currentCard.getBearer().equals("full_sleep.png") ||
-                    currentCard.getBearer().equals("deathFullDuty.png") ||
-                    currentCard.getBearer().equals("deathFullHunger.png") ||
-                    currentCard.getBearer().equals("deathFullSleep.png") ||
-                    currentCard.getBearer().equals("deathFullSocial.png")) {
+                    currentCard.getBearer().equals("empty_sleep.png") ||
+                    currentCard.getBearer().equals("empty_hunger.png") ||
+                    currentCard.getBearer().equals("empty_social.png") ||
+                    currentCard.getBearer().equals("empty_duty.png")) {
                 cardSwipeAudio.play(0.5f, 0.5f, 0);
-            }else {
+            } else {
                 cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);
             }
         }
@@ -403,16 +398,15 @@ public class CoreGameplayLoop implements Screen {
                     currentCard.getBearer().equals("full_hunger.png") ||
                     currentCard.getBearer().equals("full_duty.png") ||
                     currentCard.getBearer().equals("full_sleep.png") ||
-                    currentCard.getBearer().equals("deathFullDuty.png") ||
-                    currentCard.getBearer().equals("deathFullHunger.png") ||
-                    currentCard.getBearer().equals("deathFullSleep.png") ||
-                    currentCard.getBearer().equals("deathFullSocial.png")) {
+                    currentCard.getBearer().equals("empty_sleep.png") ||
+                    currentCard.getBearer().equals("empty_hunger.png") ||
+                    currentCard.getBearer().equals("empty_social.png") ||
+                    currentCard.getBearer().equals("empty_duty.png")) {
                 satanNoise.play(0.5f, 1, 0);
             }
         }
         howManyCardsPlayed++;
         saveGame();
-
     }
     /*
     Adds swipe right effect of the current card to the attribute int's and starts the card swipe animation
@@ -434,10 +428,10 @@ public class CoreGameplayLoop implements Screen {
                     currentCard.getBearer().equals("full_hunger.png") ||
                     currentCard.getBearer().equals("full_duty.png") ||
                     currentCard.getBearer().equals("full_sleep.png") ||
-                    currentCard.getBearer().equals("deathFullDuty.png") ||
-                    currentCard.getBearer().equals("deathFullHunger.png") ||
-                    currentCard.getBearer().equals("deathFullSleep.png") ||
-                    currentCard.getBearer().equals("deathFullSocial.png")) {
+                    currentCard.getBearer().equals("empty_sleep.png") ||
+                    currentCard.getBearer().equals("empty_hunger.png") ||
+                    currentCard.getBearer().equals("empty_social.png") ||
+                    currentCard.getBearer().equals("empty_duty.png")) {
                 cardSwipeAudio.play(0.5f, 0.5f, 0);
             }else {
                 cardSwipeAudio.play(0.5f, MathUtils.random(0.9f, 1.1f), 0);
@@ -457,16 +451,15 @@ public class CoreGameplayLoop implements Screen {
                     currentCard.getBearer().equals("full_hunger.png") ||
                     currentCard.getBearer().equals("full_duty.png") ||
                     currentCard.getBearer().equals("full_sleep.png") ||
-                    currentCard.getBearer().equals("deathFullDuty.png") ||
-                    currentCard.getBearer().equals("deathFullHunger.png") ||
-                    currentCard.getBearer().equals("deathFullSleep.png") ||
-                    currentCard.getBearer().equals("deathFullSocial.png")) {
+                    currentCard.getBearer().equals("empty_sleep.png") ||
+                    currentCard.getBearer().equals("empty_hunger.png") ||
+                    currentCard.getBearer().equals("empty_social.png") ||
+                    currentCard.getBearer().equals("empty_duty.png")) {
                 satanNoise.play(0.5f, 1, 0);
             }
         }
         howManyCardsPlayed++;
         saveGame();
-
     }
 
     public void updateRotations() {
