@@ -226,17 +226,11 @@ public class CoreGameplayLoop implements Screen {
                     }
                     if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
-                        //if the game is won the player is returned to main menu
-                        if (howManyCardsPlayed/3 == 31) {
-                            host.setScreen(new MainMenu(host));
-                        }
+
                         cardSwipeLeft();
                     } else if (touchPos.x > visualCard.getX() && touchPos.x < visualCard.getX() + visualCard.getWidth() / 2 + visualCard.getWidth()
                             && touchPos.y > visualCard.getY() && touchPos.y < visualCard.getY() + visualCard.getHeight()) {
-                        //if the game is won the player is returned to main menu
-                        if (howManyCardsPlayed/3 == 31) {
-                            host.setScreen(new MainMenu(host));
-                        }
+
                         cardSwipeRight();
                     }
                 }
@@ -551,8 +545,31 @@ public class CoreGameplayLoop implements Screen {
         } else if (social >=100) {
             currentCard = endConditionDeck.getDeck()[7];
             gameOver = true;
-        } else if (howManyCardsPlayed/3 == 31) {
-            currentCard = endConditionDeck.getDeck()[8];
+        } else if (howManyCardsPlayed/3 >= 31) {
+            if (scriptCounter == 0) {
+                currentCard = endConditionDeck.getDeck()[8];
+                scriptCounter++;
+            } else if (scriptCounter == 1) {
+                currentCard = endConditionDeck.getDeck()[9];
+                scriptCounter++;
+            } else if (scriptCounter == 2) {
+                currentCard = endConditionDeck.getDeck()[10];
+                scriptCounter++;
+            } else if (scriptCounter == 3) {
+                currentCard = endConditionDeck.getDeck()[11];
+                scriptCounter++;
+            } else if (scriptCounter == 4) {
+                currentCard = endConditionDeck.getDeck()[12];
+                scriptCounter++;
+            } else if (scriptCounter == 5) {
+                currentCard = endConditionDeck.getDeck()[13];
+                scriptCounter++;
+            } else if (scriptCounter == 6) {
+                resetAfterDeath();
+                currentCard = commonDeck.drawACard();
+                saveGame();
+                host.setScreen(new MainMenu(host));
+            }
          //If the tutorial is not yet completed, plays the tutorial
         } else if(!(tutorialCompleted)) {
                 if (scriptCounter == 0) {
