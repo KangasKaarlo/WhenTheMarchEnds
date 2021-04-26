@@ -22,6 +22,9 @@ import fi.tuni.tamk.tiko.utils.Card;
 import fi.tuni.tamk.tiko.utils.Deck;
 import fi.tuni.tamk.tiko.utils.GameState;
 
+/**
+ * This is the core loop of the game, where the player can play the game
+ */
 public class CoreGameplayLoop implements Screen {
     private Main host;
     private SpriteBatch batch;
@@ -456,6 +459,9 @@ public class CoreGameplayLoop implements Screen {
         saveGame();
     }
 
+    /**
+     * Updates rotations for the common deck by raising all cards by one and making sure that the currentCard stays at 0
+     */
     public void updateRotations() {
         for (int i = 0; i < commonDeck.getDeck().length; i++) {
             if (commonDeck.getDeck()[i].getRotation() < commonDeck.getDeck()[i].getRotationRequirement()) {

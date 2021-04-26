@@ -11,6 +11,13 @@ import com.google.gson.Gson;
 
 import fi.tuni.tamk.tiko.utils.GameState;
 
+/**
+ * A single player card game where a player answers yes or no to a question and tries to balance different stats.
+ *
+ * @author Team 20TIKO1B
+ * @version 2021.2404
+ * @since 15.0.1
+ */
 public class Main extends Game {
     Boolean sfxOn;
     Boolean musicOn;
@@ -21,10 +28,6 @@ public class Main extends Game {
 
 	@Override
 	public void create () {
-
-
-
-
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 9,16);
