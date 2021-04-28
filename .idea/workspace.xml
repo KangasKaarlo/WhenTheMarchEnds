@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="364a9124-b46b-44bd-a0e3-ba3e370019d5" name="Default Changelist" comment="" />
+    <list default="true" id="364a9124-b46b-44bd-a0e3-ba3e370019d5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/android/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/android/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/src/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/android/src/fi/tuni/tamk/tiko/AndroidLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/android/src/fi/tuni/tamk/WTME/AndroidLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/tiko/CoreGameplayLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/WTME/CoreGameplayLoop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/tiko/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/WTME/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/tiko/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/WTME/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/tiko/SettingsMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/WTME/SettingsMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/tiko/utils/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/WTME/utils/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/tiko/utils/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/WTME/utils/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/tiko/utils/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/src/fi/tuni/tamk/WTME/utils/GameState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/desktop/src/fi/tuni/tamk/tiko/desktop/DesktopLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/desktop/src/fi/tuni/tamk/WTME/desktop/DesktopLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/html/src/fi/tuni/tamk/tiko/GdxDefinition.gwt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/html/src/fi/tuni/tamk/WTME/GdxDefinition.gwt.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/html/src/fi/tuni/tamk/tiko/GdxDefinitionSuperdev.gwt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/html/src/fi/tuni/tamk/WTME/GdxDefinitionSuperdev.gwt.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/html/src/fi/tuni/tamk/tiko/client/HtmlLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/html/src/fi/tuni/tamk/WTME/client/HtmlLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ios/robovm.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/ios/robovm.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ios/src/fi/tuni/tamk/tiko/IOSLauncher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ios/src/fi/tuni/tamk/WTME/IOSLauncher.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +36,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -38,9 +56,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1616865873364" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1616865880471">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1619453222384">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1616865880471" />
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1619453222384" />
   </component>
 </project>
